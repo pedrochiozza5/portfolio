@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowDown, ArrowRight, ArrowUpRight, Braces, Check, Code2, Copy, Github, Layers3, Linkedin, Mail, MapPin, Menu, MonitorSmartphone, Server, ShieldCheck, TerminalSquare, X, Settings, Network, Bot, Wrench, Globe, Zap } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Braces, Check, Code2, Copy, Github, Layers3, Linkedin, Mail, MapPin, Menu, MonitorSmartphone, Server, ShieldCheck, TerminalSquare, X, Settings, Network, Bot, Globe } from 'lucide-react';
 
 const email = 'pedrochiozza5@gmail.com';
 const github = 'https://github.com/pedrochiozza5';
