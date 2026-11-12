@@ -1,53 +1,271 @@
-import { useEffect, useState } from 'react';
-import { ArrowRight, ArrowUpRight, Braces, Check, Code2, Copy, Github, Layers3, Linkedin, Mail, MapPin, Menu, MonitorSmartphone, Server, ShieldCheck, TerminalSquare, X, Settings, Network, Bot, Globe } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import {
+  ArrowDown, ArrowRight, ArrowUpRight, Braces, Check, ChevronRight,
+  Code2, Command, Copy, Database, ExternalLink, Github,
+  Instagram, Layers3, Mail, Menu, MonitorSmartphone, Network,
+  Settings2, ShieldCheck, Workflow, X,
+} from 'lucide-react';
 
-const email = 'pedrochiozza5@gmail.com';
-const github = 'https://github.com/pedrochiozza5';
-const instagram = 'https://www.instagram.com/cz.tecno/';
-const linkedin = 'https://www.linkedin.com/'; // Personalizar con tu perfil de LinkedIn
+const EMAIL = 'pedrochiozza5@gmail.com';
+const INSTAGRAM = 'https://www.instagram.com/cz.tecno/';
+const GITHUB = 'https://github.com/pedrochiozza5';
 
-type Category = 'Todos' | 'Backend' | 'Web' | 'Sistemas';
-type Project = { index: string; name: string; category: Exclude<Category, 'Todos'>; description: string; tags: string[]; visual: 'turnero' | 'comercio' | 'sistema' | 'portal'; url?: string; state: string };
+type Category = 'Web' | 'Sistemas' | 'Automatización' | 'Backend';
+type Filter = 'Todos' | Category;
+type Visual = 'sushi' | 'amargos' | 'coop' | 'teros' | 'contable' | 'turnero';
+type Project = {
+  id: string;
+  number: string;
+  name: string;
+  tagline: string;
+  category: Category;
+  kind: string;
+  status: string;
+  description: string;
+  problem: string;
+  solution: string;
+  result: string;
+  stack: string[];
+  visual: Visual;
+  url?: string;
+  urlLabel?: string;
+};
 
 const projects: Project[] = [
-  { index: '01', name: 'Turnero', category: 'Backend', description: 'Gestión de turnos de punta a punta. Una interfaz clara conectada a una API REST con persistencia real de datos.', tags: ['TypeScript', 'Node.js', 'Fastify', 'SQLite'], visual: 'turnero', url: 'https://github.com/pedrochiozza5/turnero-api', state: 'Código en GitHub' },
-  { index: '02', name: 'Bien Amargos', category: 'Web', description: 'Experiencia de e-commerce con catálogo, variantes de productos, carrito y gestión desde un panel administrativo.', tags: ['React', 'TypeScript', 'MySQL'], visual: 'comercio', state: 'Proyecto comercial' },
-  { index: '03', name: 'CZ Contable', category: 'Sistemas', description: 'Sistema de gestión contable en desarrollo, enfocado en modelos de datos, organización modular y procesos de negocio.', tags: ['Next.js', 'NestJS', 'Prisma'], visual: 'sistema', state: 'En desarrollo' },
-  { index: '04', name: 'Ranchos Abierto', category: 'Web', description: 'Guía local de comercios y servicios. Un producto pensado desde la experiencia mobile-first y el uso cotidiano.', tags: ['React', 'PWA', 'Supabase'], visual: 'portal', state: 'Proyecto personal' },
+  {
+    id: 'puntto', number: '01', name: 'Puntto Sushi', tagline: 'De recibir pedidos a gestionar una operación.',
+    category: 'Sistemas', kind: 'GASTRONOMÍA · PRODUCTO DIGITAL', status: 'PROYECTO REAL',
+    description: 'Tienda gastronómica y sistema de gestión: pedidos por WhatsApp, administración, producción, clientes y notificaciones en un mismo flujo.',
+    problem: 'Los pedidos, la atención y la producción necesitan estar conectados para evitar pasos manuales y confusiones.',
+    solution: 'Diseñé una experiencia de compra mobile-first junto a un panel administrativo para gestionar pedidos, clientes, estados y producción.',
+    result: 'Una operación digital más ordenada, con herramientas pensadas para quien vende y para quien compra.',
+    stack: ['React', 'TypeScript', 'PHP', 'MySQL', 'PWA'], visual: 'sushi',
+    url: 'https://punttosushi.com.ar/', urlLabel: 'Visitar sitio',
+  },
+  {
+    id: 'amargos', number: '02', name: 'Bien Amargos', tagline: 'Dos marcas. Una experiencia de compra.',
+    category: 'Web', kind: 'E-COMMERCE · MULTIMARCA', status: 'PROYECTO REAL',
+    description: 'E-commerce para Bien Amargos y Bien Yerbados, con catálogo, variantes, stock, carrito por WhatsApp y un administrador a medida.',
+    problem: 'Hacía falta mostrar productos y sus variantes sin complicar la compra ni la carga diaria del catálogo.',
+    solution: 'Desarrollé una tienda responsive con identidad por marca y un panel de gestión para productos, imágenes, pedidos y stock.',
+    result: 'Una base comercial que permite crecer el catálogo sin perder claridad visual ni control operativo.',
+    stack: ['React', 'Vite', 'Fastify', 'MySQL'], visual: 'amargos',
+    url: 'https://bienamargos.com.ar/', urlLabel: 'Visitar tienda',
+  },
+  {
+    id: 'coop', number: '03', name: 'COOP FLOW', tagline: 'Menos tareas repetidas. Más operación.',
+    category: 'Automatización', kind: 'OPERACIONES · WORKFLOWS', status: 'SISTEMA INTERNO',
+    description: 'Plataforma para ordenar tareas, consultas y flujos operativos, integrando herramientas web con procesos locales.',
+    problem: 'Cuando la información está dispersa entre sistemas y personas, resolver incidentes lleva más tiempo.',
+    solution: 'Construí un panel de trabajo y conectores para centralizar información, automatizar tareas y facilitar el seguimiento.',
+    result: 'Una forma de trabajo con más trazabilidad y menos carga manual. La implementación contiene datos privados no publicados.',
+    stack: ['Node.js', 'MySQL', 'APIs', 'Integraciones'], visual: 'coop',
+  },
+  {
+    id: 'teros', number: '04', name: 'Los Teros', tagline: 'Las reservas también se pueden automatizar.',
+    category: 'Automatización', kind: 'RESERVAS · WHATSAPP', status: 'PROYECTO REAL',
+    description: 'Bot de reservas por WhatsApp y panel de control para canchas, horarios, cancelaciones y organización de torneos.',
+    problem: 'Coordinar turnos manualmente genera mensajes repetidos, solapamientos y tiempo perdido.',
+    solution: 'Diseñé el flujo de reservas, reglas de disponibilidad y un panel para administrar turnos y torneos.',
+    result: 'Un circuito de reserva claro para jugadores y administradores, desde el mensaje hasta la confirmación.',
+    stack: ['Node.js', 'WhatsApp', 'MySQL', 'Automatización'], visual: 'teros',
+  },
+  {
+    id: 'contable', number: '05', name: 'CZ Contable', tagline: 'Gestión compleja, interfaz clara.',
+    category: 'Sistemas', kind: 'SOFTWARE DE GESTIÓN · SAAS', status: 'EN DESARROLLO',
+    description: 'Sistema contable modular con empresas, asientos, movimientos, compras, ventas, períodos y trazabilidad.',
+    problem: 'Los procesos administrativos necesitan estructura, validaciones y una base confiable para crecer.',
+    solution: 'Estoy desarrollando una arquitectura modular de backend, base de datos y panel de gestión.',
+    result: 'Proyecto en evolución enfocado en mantener la información organizada y facilitar las tareas del día a día.',
+    stack: ['Next.js', 'NestJS', 'Prisma', 'MySQL'], visual: 'contable',
+  },
+  {
+    id: 'turnero', number: '06', name: 'Turnero API', tagline: 'Una buena experiencia empieza por una buena API.',
+    category: 'Backend', kind: 'API REST · GESTIÓN DE TURNOS', status: 'CÓDIGO PÚBLICO',
+    description: 'Backend de agenda digital con lógica de turnos, validaciones y persistencia; código disponible para explorar en GitHub.',
+    problem: 'Las agendas necesitan reglas precisas para consultar, crear y administrar reservas sin inconsistencias.',
+    solution: 'Desarrollé una API REST para estructurar la información y gestionar los turnos de manera consistente.',
+    result: 'Un proyecto técnico público que muestra mi forma de trabajar con lógica de negocio y datos.',
+    stack: ['TypeScript', 'Node.js', 'Fastify', 'SQLite'], visual: 'turnero',
+    url: 'https://github.com/pedrochiozza5/turnero-api', urlLabel: 'Ver repositorio',
+  },
 ];
 
-function ProjectVisual({ visual }: { visual: Project['visual'] }) {
-  if (visual === 'turnero') return <div className="visual visual-turnero"><div className="mock-window"><div className="mock-top"><span className="mini-brand">turnero<span className="period">.</span></span><span className="mini-lines">•••</span></div><div className="mock-heading"><span>Agenda de turnos</span><span className="mini-pill">+ Nuevo turno</span></div><div className="mock-meta">Hoy, tu agenda en orden.</div><div className="mock-rows"><div><i className="avatar-swatch"/><span><strong>María González</strong><small>Corte · 10:30</small></span><b>Confirmado</b></div><div><i className="avatar-swatch amber"/><span><strong>Juan Pérez</strong><small>Consulta · 12:00</small></span><b>Pendiente</b></div><div><i className="avatar-swatch navy"/><span><strong>Lucía Fernández</strong><small>Control · 14:30</small></span><b>Confirmado</b></div></div></div><span className="visual-label">API + INTERFAZ + DATOS</span></div>;
-  if (visual === 'comercio') return <div className="visual visual-comercio"><div className="shop-header"><span>bien amargos<span style={{color:'#d2b78b'}}>.</span></span><span>TIENDA / COLECCIÓN / NOSOTROS</span></div><div className="shop-hero"><small>HECHO PARA COMPARTIR</small><strong>El ritual<br/>de cada día.</strong><span>OBJETOS PARA DISFRUTAR EL MATE ↗</span></div><div className="shop-orb"/><span className="visual-label">EXPERIENCIA E-COMMERCE</span></div>;
-  if (visual === 'sistema') return <div className="visual visual-sistema"><div className="sys-sidebar"><div className="sys-logo">CZ<span>.</span></div><span>▦</span><span>▤</span><span>◉</span></div><div className="sys-content"><small>PANEL GENERAL / 2026</small><strong>Visión general</strong><div className="sys-stats"><div><small>Movimientos</small><b>1.284</b></div><div><small>Balance</small><b>+ 24.8%</b></div></div><div className="sys-bars"><i/><i/><i/><i/><i/><i/><i/><i/><i/></div></div><span className="visual-label">APLICACIONES DE NEGOCIO</span></div>;
-  return <div className="visual visual-portal"><div className="portal-map"><span>◌</span><span>◌</span><span>◌</span></div><div className="portal-card"><small>DESCUBRÍ TU CIUDAD</small><strong>Ranchos<br/>Abierto<span>.</span></strong><p>Todo lo que necesitás, más cerca.</p><span>EXPLORAR COMERCIOS ↗</span></div><span className="visual-label">PRODUCTO DIGITAL LOCAL</span></div>;
+const filters: Filter[] = ['Todos', 'Web', 'Sistemas', 'Automatización', 'Backend'];
+
+function Brand({ inverse = false }: { inverse?: boolean }) {
+  return <span className={`brand-lockup ${inverse ? 'brand-inverse' : ''}`}>
+    <span className="brand-symbol" aria-hidden="true"><Settings2 size={22} strokeWidth={2.5} /></span>
+    <span className="brand-text">cz<span>.</span>tecno</span>
+  </span>;
+}
+
+function ProjectVisual({ variant }: { variant: Visual }) {
+  if (variant === 'sushi') return <div className="visual visual-sushi">
+    <div className="v-top"><span>PUNTTO<span className="v-top-dot">●</span>SUSHI</span><span>ORDER SYSTEM / 01</span></div>
+    <div className="sushi-glyph" aria-hidden="true"><span/><span/><span/></div>
+    <div className="sushi-title">GOOD FOOD.<br/><em>SMART FLOW.</em></div>
+    <div className="sushi-ticket"><small>ÚLTIMO PEDIDO</small><strong>#0258 <span>Confirmado</span></strong><div>Combo · 24 piezas <b>→</b></div><div>Retiro en local <b>✓</b></div></div>
+    <div className="v-caption">REPRESENTACIÓN VISUAL / NO CAPTURA</div>
+  </div>;
+  if (variant === 'amargos') return <div className="visual visual-amargos">
+    <div className="v-top"><span>bien amargos<span className="v-top-dot">.</span></span><span>TIENDA / COLECCIÓN</span></div>
+    <div className="mate-halo" aria-hidden="true"><div className="mate-body"><div className="mate-top"/><div className="mate-straw"/></div></div>
+    <div className="mate-headline">TU RITUAL.<br/><em>TU MOMENTO.</em></div>
+    <div className="mate-tag">E-COMMERCE MULTIMARCA <ArrowUpRight size={13}/></div>
+    <div className="v-caption">REPRESENTACIÓN VISUAL / NO CAPTURA</div>
+  </div>;
+  if (variant === 'coop') return <div className="visual visual-coop">
+    <div className="v-top"><span>COOP<span className="v-top-dot">_</span>FLOW</span><span>OPERATIONS / SYSTEM</span></div>
+    <div className="coop-frame"><div className="coop-frame-head"><span><i/> CONTROL CENTER</span><span>ACTIVE SESSION</span></div><div className="coop-metrics"><div><small>Procesos</small><strong>Automatizar</strong><span className="coop-line l1"/></div><div><small>Flujos</small><strong>Conectar</strong><span className="coop-line l2"/></div></div><div className="coop-steps"><div><i/> Entrada de información <b>01</b></div><div><i/> Validación y proceso <b>02</b></div><div><i/> Seguimiento y control <b>03</b></div></div></div>
+    <div className="v-caption">INTERFAZ CONCEPTUAL / DATOS FICTICIOS</div>
+  </div>;
+  if (variant === 'teros') return <div className="visual visual-teros">
+    <div className="v-top"><span>LOS TEROS <span className="v-top-dot">↗</span></span><span>RESERVAS / AUTOMATION</span></div>
+    <div className="teros-court"><div className="court-mid"/><div className="court-circle"/></div>
+    <div className="teros-widget"><span>TURNOS DISPONIBLES</span><div><b>15:00</b><b>16:00</b><b className="slot-active">17:00 <Check size={12}/></b></div><small>Reservá en segundos, desde WhatsApp.</small></div>
+    <div className="v-caption">REPRESENTACIÓN VISUAL / NO CAPTURA</div>
+  </div>;
+  if (variant === 'contable') return <div className="visual visual-contable">
+    <div className="v-top"><span>CZ<span className="v-top-dot">.</span>CONTABLE</span><span>FINANCE / OPERATIONS</span></div>
+    <div className="finance-card"><small>GESTIÓN / VISIÓN GENERAL</small><strong>Todo más claro<span>.</span></strong><div className="finance-chart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div><div className="finance-bottom"><span>Ventas</span><span>Compras</span><span>Movimientos</span></div></div>
+    <div className="v-caption">INTERFAZ CONCEPTUAL / DATOS FICTICIOS</div>
+  </div>;
+  return <div className="visual visual-turnero">
+    <div className="v-top"><span>&gt; turnero_api<span className="v-top-dot">_</span></span><span>BACKEND / OPEN SOURCE</span></div>
+    <div className="terminal-code"><div><span className="line-no">01</span><span className="code-purple">const</span> booking = <span className="code-yellow">await</span> api.create({'{'}</div><div><span className="line-no">02</span>&nbsp; &nbsp; date: <span className="code-green">'2026-11-12'</span>,</div><div><span className="line-no">03</span>&nbsp; &nbsp; status: <span className="code-green">'confirmed'</span></div><div><span className="line-no">04</span>{'}'});</div><div className="terminal-response"><span className="line-no">05</span>✓ 201 CREATED</div></div>
+    <div className="terminal-note">TYPE SAFE <span>✳</span> REST API <span>✳</span> DATA FIRST</div>
+    <div className="v-caption">EJEMPLO ILUSTRATIVO / NO CÓDIGO DEL REPO</div>
+  </div>;
 }
 
 function App() {
+  const [filter, setFilter] = useState<Filter>('Todos');
   const [menuOpen, setMenuOpen] = useState(false);
-  const [filter, setFilter] = useState<Category>('Todos');
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [commandOpen, setCommandOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const filtered = filter === 'Todos' ? projects : projects.filter(p => p.category === filter);
-  useEffect(() => { const fn = () => setScrolled(window.scrollY > 30); window.addEventListener('scroll', fn, { passive: true }); return () => window.removeEventListener('scroll', fn); }, []);
-  async function copyEmail() { try { await navigator.clipboard.writeText(email); setCopied(true); window.setTimeout(() => setCopied(false), 2200); } catch { window.location.href = `mailto:${email}`; } }
-  function closeMenu() { setMenuOpen(false); }
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const shown = filter === 'Todos' ? projects : projects.filter(project => project.category === filter);
+
+  useEffect(() => {
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(max > 0 ? window.scrollY / max * 100 : 0);
+      document.body.classList.toggle('is-scrolled', window.scrollY > 30);
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+    return () => window.removeEventListener('scroll', update);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('in-view'); observer.unobserve(entry.target); } });
+    }, { rootMargin: '0px 0px -35px 0px', threshold: 0.08 });
+    document.querySelectorAll('.reveal:not(.in-view)').forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, [filter]);
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setCommandOpen(v => !v); }
+      if (event.key === 'Escape') { setActiveProject(null); setCommandOpen(false); setMenuOpen(false); }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = activeProject || commandOpen || menuOpen ? 'hidden' : '';
+    if (activeProject) closeRef.current?.focus();
+    return () => { document.body.style.overflow = ''; };
+  }, [activeProject, commandOpen, menuOpen]);
+
+  useEffect(() => {
+    const onMove = (event: PointerEvent) => {
+      if (event.pointerType === 'mouse') {
+        document.documentElement.style.setProperty('--mouse-x', `${event.clientX}px`);
+        document.documentElement.style.setProperty('--mouse-y', `${event.clientY}px`);
+      }
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onMove);
+  }, []);
+
+  async function copyEmail() {
+    try { await navigator.clipboard.writeText(EMAIL); setCopied(true); window.setTimeout(() => setCopied(false), 2300); }
+    catch { window.location.href = `mailto:${EMAIL}`; }
+  }
+  const navigate = (id: string) => { setMenuOpen(false); setCommandOpen(false); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); };
+
   return <>
-    <header className={`site-header ${scrolled ? 'scrolled' : ''}`}><div className="container header-inner">
-      <a className="brand" href="#inicio" onClick={closeMenu} aria-label="Ir al inicio"><span className="brand-gear"><Settings size={22} strokeWidth={2.7}/></span><span className="brand-name">CZ<span className="brand-dot">.</span>TECNO</span><span className="brand-caption">DIGITAL STUDIO</span></a>
-      <nav className={`nav ${menuOpen ? 'nav-open' : ''}`} aria-label="Navegación principal"><a href="#proyectos" onClick={closeMenu}>Proyectos</a><a href="#sobre-mi" onClick={closeMenu}>Sobre mí</a><a href="#servicios" onClick={closeMenu}>Servicios</a><a href="#experiencia" onClick={closeMenu}>Experiencia</a><a className="nav-contact" href="#contacto" onClick={closeMenu}>Hablemos <ArrowUpRight size={15}/></a></nav>
-      <button className="menu-toggle" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={24}/> : <Menu size={24}/>}</button>
+    <div className="page-progress" style={{ width: `${scrollProgress}%` }} aria-hidden="true" />
+    <header className="site-header"><div className="shell nav-shell">
+      <a href="#inicio" className="logo-link" onClick={() => setMenuOpen(false)} aria-label="CZ TECNO, ir al inicio"><Brand /></a>
+      <nav className={`desktop-nav ${menuOpen ? 'open' : ''}`} aria-label="Navegación principal">
+        <a href="#proyectos" onClick={() => setMenuOpen(false)}>Proyectos <span>01</span></a>
+        <a href="#soluciones" onClick={() => setMenuOpen(false)}>Soluciones <span>02</span></a>
+        <a href="#nosotros" onClick={() => setMenuOpen(false)}>Acerca de <span>03</span></a>
+        <a href="#vision" onClick={() => setMenuOpen(false)}>Visión <span>04</span></a>
+        <a className="mobile-contact" href="#contacto" onClick={() => setMenuOpen(false)}>Contacto <ArrowUpRight size={16}/></a>
+      </nav>
+      <div className="nav-actions"><button className="command-trigger" onClick={() => setCommandOpen(true)} title="Accesos rápidos (Ctrl+K)" aria-label="Abrir accesos rápidos"><Command size={15}/> <span>K</span></button><a href="#contacto" className="nav-cta">Hablemos <ArrowUpRight size={16}/></a><button className="nav-toggle" type="button" onClick={() => setMenuOpen(v => !v)} aria-expanded={menuOpen} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>{menuOpen ? <X size={23}/> : <Menu size={23}/>}</button></div>
     </div></header>
+
     <main>
-      <section className="hero" id="inicio"><div className="container hero-layout"><div className="hero-main"><div className="eyebrow"><span className="pulse-dot"/> CZ TECNO / DESARROLLO & TECNOLOGÍA <span className="eyebrow-line"/></div><p className="hero-intro">Hola, soy Pedro Chiozza. Detrás de CZ Tecno.</p><h1>Ideas que se<br/><span className="heading-serif">convierten en</span><br/><span className="heading-last">soluciones<span className="headline-period">.</span></span></h1><p className="hero-desc">Desarrollo sitios web, sistemas y automatizaciones que resuelven problemas reales. También trabajo con redes, infraestructura y soporte IT.</p><div className="hero-actions"><a className="btn btn-dark" href="#proyectos">Ver proyectos <ArrowUpRight size={18}/></a><a className="btn btn-plain" href="#contacto">Hablemos de tu idea <ArrowRight size={18}/></a></div><div className="hero-social"><span><MapPin size={15}/> Ranchos, Buenos Aires</span><a href={instagram} target="_blank" rel="noreferrer">Instagram ↗</a><a href={github} target="_blank" rel="noreferrer">GitHub ↗</a></div></div><div className="hero-side"><div className="hero-art"><div className="art-top"><span>EST. ARGENTINA / 2026</span><span>01 — CZ</span></div><div className="art-ring ring-one"/><div className="art-ring ring-two"/><div className="art-center"><Settings size={90} strokeWidth={1.35}/><strong>CZ<span>.</span>TECNO</strong><small>WEB · SYSTEMS · NETWORKS</small></div><div className="art-footer"><span>BUILDING<br/>WHAT'S NEXT</span><span className="art-spark">✳</span></div></div><div className="hero-facts"><div><span>01 /</span> Desarrollo web</div><div><span>02 /</span> Sistemas & APIs</div><div><span>03 /</span> Redes & soporte</div></div></div></div></section>
-      <section className="marquee" aria-label="Áreas de especialización"><div className="marquee-track"><span>BACKEND DEVELOPMENT</span><i>✳</i><span>WEB APPLICATIONS</span><i>✳</i><span>API DESIGN</span><i>✳</i><span>SYSTEMS & INFRASTRUCTURE</span><i>✳</i><span>BACKEND DEVELOPMENT</span><i>✳</i><span>WEB APPLICATIONS</span><i>✳</i><span>API DESIGN</span><i>✳</i><span>SYSTEMS & INFRASTRUCTURE</span><i>✳</i></div></section>
-      <section className="section container work-section" id="proyectos"><div className="section-top"><div><span className="section-kicker"><span>01 /</span> CASOS & PROYECTOS</span><h2>Trabajo<span className="heading-serif"> seleccionado.</span></h2></div><p>Proyectos de software y productos digitales: desde la idea hasta la implementación.</p></div><div className="filter-row" role="group" aria-label="Filtrar proyectos">{(['Todos','Backend','Web','Sistemas'] as Category[]).map(f => <button key={f} className={filter === f ? 'filter active' : 'filter'} onClick={() => setFilter(f)} aria-pressed={filter === f}>{f}{f === 'Todos' && <span>{projects.length}</span>}</button>)}</div><div className="project-grid">{filtered.map(project => <article className="project-card" key={project.index}><div className="project-img"><ProjectVisual visual={project.visual}/></div><div className="project-details"><div className="project-details-top"><span className="project-counter">{project.index} / {project.category.toUpperCase()}</span><span className="project-status">{project.state}</span></div><div className="project-title-row"><h3>{project.name}</h3>{project.url ? <a className="circle-link" href={project.url} target="_blank" rel="noreferrer" aria-label={`Ver ${project.name} en GitHub`}><ArrowUpRight size={21}/></a> : <span className="circle-link no-link" aria-hidden="true"><ArrowUpRight size={21}/></span>}</div><p>{project.description}</p><div className="tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div></div></article>)}</div><a href={github} target="_blank" rel="noreferrer" className="all-work">Más código en GitHub <Github size={19}/><ArrowUpRight size={17}/></a></section>
-      <section className="about-outer" id="sobre-mi"><div className="container about-grid"><div className="about-left"><span className="section-kicker"><span>02 /</span> SOBRE MÍ</span><h2>Una mirada técnica.<br/><span className="heading-serif">De principio a fin.</span></h2><p className="about-lead">Construyo soluciones pensadas para usarse de verdad, no solo para verse bien.</p><p>Soy Pedro Chiozza, desarrollador y técnico informático detrás de CZ Tecno. Mi experiencia une software, redes e infraestructura para ofrecer soluciones completas a negocios y equipos.</p><a href={`mailto:${email}`} className="underlined-link">Conectemos <ArrowUpRight size={18}/></a></div><div className="about-right"><div className="discipline"><div className="discipline-icon"><Server size={23}/></div><div><h3>Backend & APIs</h3><p>Servicios, endpoints REST, lógica de negocio, validaciones y bases de datos.</p></div><span>01</span></div><div className="discipline"><div className="discipline-icon"><MonitorSmartphone size={23}/></div><div><h3>Aplicaciones web</h3><p>Interfaces responsive, experiencias funcionales y productos digitales completos.</p></div><span>02</span></div><div className="discipline"><div className="discipline-icon"><ShieldCheck size={23}/></div><div><h3>Sistemas & redes</h3><p>Diagnóstico, operación de infraestructura, resolución de problemas y seguridad.</p></div><span>03</span></div></div></div></section>
-      <section className="services-section" id="servicios"><div className="container"><div className="section-top"><div><span className="section-kicker"><span>03 /</span> QUÉ HAGO</span><h2>Servicios con <span className="heading-serif">criterio técnico.</span></h2></div><p>Desde una web comercial hasta herramientas internas e infraestructura IT. Cada solución parte de una necesidad concreta.</p></div><div className="services-grid"><article className="service"><span>01</span><Globe size={29}/><h3>Desarrollo web</h3><p>Webs comerciales, catálogos, tiendas y experiencias responsive a medida.</p><div>WEB / E-COMMERCE / UX <ArrowUpRight size={16}/></div></article><article className="service"><span>02</span><Server size={29}/><h3>Sistemas & backend</h3><p>APIs REST, paneles administrativos, bases de datos y procesos de gestión.</p><div>APIs / BASES DE DATOS <ArrowUpRight size={16}/></div></article><article className="service"><span>03</span><Bot size={29}/><h3>Automatización</h3><p>Bots, integraciones y flujos que reducen tareas repetitivas.</p><div>BOTS / INTEGRACIONES <ArrowUpRight size={16}/></div></article><article className="service"><span>04</span><Network size={29}/><h3>Redes & soporte IT</h3><p>Configuración, diagnóstico, optimización y mantenimiento técnico.</p><div>NETWORKING / SOPORTE <ArrowUpRight size={16}/></div></article></div></div></section>
-      <section className="section container stack-section"><div className="section-top stack-heading"><div><span className="section-kicker"><span>04 /</span> HERRAMIENTAS</span><h2>Mi <span className="heading-serif">stack.</span></h2></div><p>Herramientas que utilizo y sigo explorando según lo que necesita cada proyecto.</p></div><div className="stack-grid"><div className="stack-tile"><Code2 size={25}/><span>FRONTEND</span><strong>React · TypeScript<br/>HTML · CSS</strong></div><div className="stack-tile"><Braces size={25}/><span>BACKEND</span><strong>Node.js · Fastify<br/>NestJS · PHP</strong></div><div className="stack-tile"><Layers3 size={25}/><span>DATOS</span><strong>MySQL · SQLite<br/>Prisma · Supabase</strong></div><div className="stack-tile"><TerminalSquare size={25}/><span>HERRAMIENTAS</span><strong>Git · GitHub<br/>Linux · Docker</strong></div></div></section>
-      <section className="experience-section" id="experiencia"><div className="container"><div className="section-top"><div><span className="section-kicker"><span>05 /</span> RECORRIDO</span><h2>Experiencia<span className="heading-serif"> & formación.</span></h2></div></div><div className="timeline"><div className="timeline-item"><span className="timeline-date">ACTUALIDAD</span><div><h3>Cooperativa de servicios de Ranchos</h3><p>Operación técnica de infraestructura de red, soporte, diagnóstico y desarrollo de herramientas para procesos internos.</p></div><span className="timeline-kind">INFRAESTRUCTURA / SISTEMAS</span></div><div className="timeline-item"><span className="timeline-date">2021 — 2025</span><div><h3>Municipalidad</h3><p>Soporte técnico informático, mantenimiento, resolución de incidencias y asistencia a usuarios.</p></div><span className="timeline-kind">SOPORTE IT</span></div><div className="timeline-item"><span className="timeline-date">FORMACIÓN</span><div><h3>UTN — Tecnicatura en Programación</h3><p>Formación técnica completada en desarrollo, programación y fundamentos de sistemas.</p></div><span className="timeline-kind">EDUCACIÓN</span></div></div></div></section>
-      <section className="contact-section" id="contacto"><div className="container contact-inner"><span className="section-kicker"><span>06 /</span> PRÓXIMO PASO</span><p>¿Necesitás una web, un sistema o una solución IT?</p><h2>Tu próximo proyecto<br/><span className="heading-serif">empieza acá.</span></h2><div className="contact-actions"><a className="btn btn-light" href={`mailto:${email}`}>Escribime un mail <ArrowUpRight size={20}/></a><button className="btn btn-outline" onClick={copyEmail}>{copied ? <><Check size={18}/> Copiado</> : <><Copy size={18}/> Copiar email</>}</button></div><div className="contact-mail">{email}</div></div></section>
-    </main><footer className="footer"><div className="container footer-inner"><div className="footer-id"><span>CZ<span className="brand-dot">.</span>TECNO</span><p>Desarrollo & tecnología<br/>Pedro Chiozza © {new Date().getFullYear()}</p></div><div className="footer-links"><a href={github} target="_blank" rel="noreferrer"><Github size={18}/> GitHub <ArrowUpRight size={15}/></a><a href={instagram} target="_blank" rel="noreferrer"> Instagram <ArrowUpRight size={15}/></a><a href={linkedin} target="_blank" rel="noreferrer"><Linkedin size={18}/> LinkedIn <ArrowUpRight size={15}/></a><a href={`mailto:${email}`}><Mail size={18}/> Email <ArrowUpRight size={15}/></a></div><a className="back-top" href="#inicio">VOLVER ARRIBA <ArrowUpRight size={16}/></a></div></footer>
+      <section className="hero" id="inicio"><div className="hero-mesh" aria-hidden="true"/><div className="shell hero-content">
+        <div className="hero-topline"><span className="status-dot"/><span>ESTUDIO INDEPENDIENTE · SOFTWARE & TECNOLOGÍA</span><span className="hero-topline-right">RANCHOS, ARGENTINA · 2026</span></div>
+        <div className="hero-grid"><div className="hero-copy"><span className="overline hero-mini">HOLA, SOY PEDRO. ESTO ES CZ TECNO.</span>
+          <h1>NO ES SOLO<br/><span>CODIGO.</span><br/><em>ES HACER</em><br/>QUE PASE<span className="headline-dot">.</span></h1>
+          <div className="hero-bottom"><p>Transformo ideas, procesos y problemas reales en <strong>webs, sistemas, automatizaciones y soluciones IT</strong> que se pueden usar, mantener y hacer crecer.</p><div className="hero-links"><a className="button button-primary" href="#proyectos">Explorar proyectos <ArrowUpRight size={20}/></a><a className="button button-text" href="#nosotros">Conocé CZ TECNO <ArrowDown size={19}/></a></div></div>
+        </div>
+        <div className="hero-object" aria-label="Ilustración conceptual de un sistema digital">
+          <div className="holo-grid" aria-hidden="true"/><div className="holo-ring ring-a"/><div className="holo-ring ring-b"/><div className="holo-asterisk">✳</div>
+          <div className="floating-label float-top"><span className="tiny-indicator"/> SYSTEM ONLINE <span>● ● ●</span></div>
+          <div className="floating-window"><div className="window-header"><div className="window-dots"><i/><i/><i/></div><span>cztecno / workspace</span><span>↗</span></div><div className="window-content"><small>BIENVENIDO AL PROCESO</small><strong>IDEA → <span>SOLUCIÓN</span></strong><div className="window-flow"><div><i>01</i><span>Entender</span><b>✓</b></div><div><i>02</i><span>Construir</span><b>✓</b></div><div><i>03</i><span>Evolucionar</span><b className="flow-active">↗</b></div></div></div><div className="window-bottom"><span>● READY TO BUILD</span><span>V 2.0</span></div></div>
+          <div className="floating-label float-bottom">DESIGN <span>+</span> CODE <span>+</span> SYSTEMS</div>
+          <span className="hero-vertical">DESIGNED TO SOLVE / BUILT TO LAST</span>
+        </div></div>
+        <div className="hero-foot"><a href="#proyectos" className="scroll-hint"><span className="scroll-arrow"><ArrowDown size={15}/></span> SCROLL PARA EXPLORAR</a><div className="hero-foot-links"><a href={GITHUB} target="_blank" rel="noreferrer">GITHUB <ArrowUpRight size={14}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer">INSTAGRAM <ArrowUpRight size={14}/></a></div><span>01 / PORTFOLIO DIGITAL</span></div>
+      </div></section>
+
+      <div className="ticker" aria-label="Áreas de trabajo"><div className="ticker-track" aria-hidden="true">{Array.from({ length: 4 }).map((_,i) => <span key={i}>DESARROLLO WEB <b>✳</b> SISTEMAS A MEDIDA <b>✳</b> AUTOMATIZACIONES <b>✳</b> NETWORKING & IT <b>✳</b> </span>)}</div></div>
+
+      <section className="section projects-section" id="proyectos"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>01</b> / TRABAJO REAL</span><div className="heading-row"><h2>Proyectos que<br/><em>hablan por sí solos.</em></h2><p>No se trata solo de escribir código. Se trata de entender una necesidad y construir una herramienta que sirva.</p></div></div>
+        <div className="filters reveal" role="group" aria-label="Filtrar proyectos">{filters.map(item => <button className={`filter ${filter===item?'selected':''}`} key={item} aria-pressed={filter===item} onClick={() => setFilter(item)}>{item}{item==='Todos' && <sup>{projects.length.toString().padStart(2,'0')}</sup>}</button>)}</div>
+        <div className="project-grid">{shown.map((project,i) => <article className={`project-card reveal ${i<2?'project-featured':''}`} key={project.id}>
+          <button className="project-art-action" type="button" onClick={() => setActiveProject(project)} aria-label={`Explorar el proyecto ${project.name}`}><ProjectVisual variant={project.visual}/><span className="art-open"><ArrowUpRight size={23}/></span></button>
+          <div className="project-info"><div className="project-meta"><span>{project.number} / {project.kind}</span><span className="status-label"><i/>{project.status}</span></div><div className="project-title"><h3>{project.name}</h3><button onClick={() => setActiveProject(project)} aria-label={`Leer el caso de ${project.name}`} className="project-more"><ArrowUpRight size={23}/></button></div><p className="project-tagline">{project.tagline}</p><p className="project-description">{project.description}</p><div className="project-footer"><div>{project.stack.slice(0,3).map(item => <span key={item}>{item}</span>)}</div><button onClick={() => setActiveProject(project)} className="inline-link">Ver caso <ArrowRight size={17}/></button></div></div>
+        </article>)}</div><div className="more-work reveal"><span>HAY MÁS IDEAS CONVIRTIÉNDOSE EN PROYECTOS.</span><a href={GITHUB} target="_blank" rel="noreferrer">Explorar mi GitHub <Github size={18}/><ArrowUpRight size={17}/></a></div>
+      </div></section>
+
+      <section className="manifesto-band"><div className="shell"><span>NO HAGO TECNOLOGÍA POR HACER TECNOLOGÍA.</span><p>LA HAGO PARA QUE <em>ALGO FUNCIONE MEJOR.</em></p><span className="band-asterisk">✳</span></div></section>
+
+      <section className="section solutions-section" id="soluciones"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>02</b> / SOLUCIONES</span><div className="heading-row"><h2>Un problema.<br/><em>Muchas formas de resolverlo.</em></h2><p>Mi diferencial es unir desarrollo, soporte e infraestructura en una misma mirada: lo que diseño también tiene que funcionar en la vida real.</p></div></div>
+        <div className="solutions-list"><article className="solution reveal"><span className="solution-index">01 /</span><div className="solution-icon"><MonitorSmartphone size={30}/></div><div><h3>Webs & e-commerce</h3><p>Sitios con identidad, tiendas, catálogos y experiencias mobile-first que ayudan a mostrar y vender mejor.</p><span>REACT · UI/UX · TIENDAS</span></div><ArrowUpRight className="solution-arrow" size={24}/></article>
+        <article className="solution reveal"><span className="solution-index">02 /</span><div className="solution-icon"><Database size={30}/></div><div><h3>Sistemas a medida</h3><p>Paneles administrativos, gestión de clientes, operaciones, stock, reservas, datos y APIs conectadas.</p><span>BACKEND · BASES DE DATOS · SAAS</span></div><ArrowUpRight className="solution-arrow" size={24}/></article>
+        <article className="solution reveal"><span className="solution-index">03 /</span><div className="solution-icon"><Workflow size={30}/></div><div><h3>Bots & automatización</h3><p>Procesos que dejan de depender de copiar, pegar y repetir. Integraciones y flujos diseñados para ahorrar trabajo.</p><span>WHATSAPP · APIS · INTEGRACIONES</span></div><ArrowUpRight className="solution-arrow" size={24}/></article>
+        <article className="solution reveal"><span className="solution-index">04 /</span><div className="solution-icon"><Network size={30}/></div><div><h3>Infraestructura & soporte IT</h3><p>Redes, servidores, conectividad, diagnóstico y mantenimiento. Tecnología sólida, también detrás de pantalla.</p><span>LINUX · MIKROTIK · REDES · SOPORTE</span></div><ArrowUpRight className="solution-arrow" size={24}/></article></div>
+      </div></section>
+
+      <section className="section about-section" id="nosotros"><div className="shell about-layout"><div className="about-head reveal"><span className="eyebrow"><b>03</b> / DETRÁS DEL CÓDIGO</span><h2>No soy una agencia gigante.<br/><em>Soy alguien que se involucra.</em></h2><div className="about-monogram"><span>CZ.</span><small>TECNO<br/>ESTUDIO INDEPENDIENTE</small></div></div><div className="about-story reveal"><span className="about-corner">ABOUT / 2026 ↗</span><p className="about-intro">Soy <strong>Pedro Chiozza</strong>, desarrollador full stack y técnico informático. CZ TECNO es el lugar donde junto lo que más me gusta: crear, conectar y resolver.</p><p>Mi trabajo va desde una interfaz que usa un cliente hasta la API, la base de datos, el servidor o la red que la sostiene. Me interesa entender el problema completo, no solamente una parte.</p><p>Trabajo en tecnología e infraestructura, tengo formación en programación de la UTN y desarrollo proyectos propios y para negocios reales. Lo que aprendo operando sistemas lo aplico al software que construyo.</p><div className="about-signature"><span>DESARROLLO <i>+</i> INFRAESTRUCTURA <i>+</i> CRITERIO</span><span>RANCHOS, BS. AS., ARGENTINA</span></div></div></div></section>
+
+      <section className="section process-section"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>04</b> / FORMA DE TRABAJAR</span><div className="heading-row"><h2>De “tengo una idea”<br/><em>a “ya está funcionando”.</em></h2><p>Un proceso simple, sin vueltas ni promesas imposibles.</p></div></div><div className="process-grid"><div className="process-step reveal"><span>01 <span>→</span></span><h3>Escuchar</h3><p>Entender qué pasa hoy, qué no funciona y qué vale la pena mejorar.</p></div><div className="process-step reveal"><span>02 <span>→</span></span><h3>Diseñar</h3><p>Convertir esa necesidad en un flujo, una interfaz y una solución concreta.</p></div><div className="process-step reveal"><span>03 <span>→</span></span><h3>Construir</h3><p>Desarrollar, probar, integrar y poner en funcionamiento.</p></div><div className="process-step reveal"><span>04 <span>↗</span></span><h3>Evolucionar</h3><p>Medir lo que sirve, corregir lo que falta y seguir mejorando.</p></div></div></div></section>
+
+      <section className="vision-section" id="vision"><div className="shell vision-layout"><div className="vision-copy reveal"><span className="eyebrow"><b>05</b> / LO QUE VIENE</span><h2>Hoy construyo soluciones.<br/><em>Mañana, productos que crezcan.</em></h2><p>Quiero llevar CZ TECNO de resolver necesidades puntuales a construir un estudio de software y automatización con productos propios, sistemas escalables y relaciones a largo plazo.</p><p>No se trata de hacer más por hacer más. Se trata de crear herramientas que le simplifiquen la vida a personas y negocios.</p><div className="vision-tags"><span>PRODUCTOS PROPIOS</span><span>SOFTWARE ÚTIL</span><span>CRECIMIENTO SOSTENIBLE</span></div></div><div className="vision-art reveal" aria-hidden="true"><div className="vision-orbit orbit-1"/><div className="vision-orbit orbit-2"/><span className="vision-star">✳</span><span className="vision-center">WHAT'S<br/><em>NEXT?</em></span><span className="vision-stamp">ALWAYS BUILDING / CZ TECNO</span></div></div></section>
+
+      <section className="section stack-section"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>06</b> / TECNOLOGÍAS</span><div className="heading-row"><h2>El stack cambia.<br/><em>La intención, no.</em></h2><p>Elijo herramientas por lo que resuelven. Estas son algunas de las que uso en mis proyectos y en mi trabajo técnico.</p></div></div><div className="stack-rows reveal"><div><span><Code2 size={18}/> FRONTEND</span><p>React <i>✳</i> TypeScript <i>✳</i> JavaScript <i>✳</i> HTML & CSS</p></div><div><span><Braces size={18}/> BACKEND</span><p>Node.js <i>✳</i> Fastify <i>✳</i> NestJS <i>✳</i> PHP <i>✳</i> Python</p></div><div><span><Layers3 size={18}/> DATOS & DEVOPS</span><p>MySQL <i>✳</i> SQLite <i>✳</i> Prisma <i>✳</i> Docker <i>✳</i> Git</p></div><div><span><ShieldCheck size={18}/> INFRAESTRUCTURA</span><p>Linux <i>✳</i> Windows Server <i>✳</i> MikroTik <i>✳</i> Networking</p></div></div></div></section>
+
+      <section className="contact-section" id="contacto"><div className="shell contact-shell"><span className="eyebrow"><b>07</b> / CONSTRUYAMOS ALGO</span><div className="contact-flex"><div><p>¿Tenés un problema que necesita una solución?</p><h2>CONTAME<br/><em>LA IDEA.</em><span>↗</span></h2></div><div className="contact-side"><p>Una web. Un sistema. Una automatización. O simplemente algo que no está funcionando como debería. Arranquemos por una charla.</p><a href={`mailto:${EMAIL}?subject=Proyecto%20para%20CZ%20TECNO`} className="button button-primary">Hablemos de tu proyecto <ArrowUpRight size={20}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer" className="instagram-link"><Instagram size={19}/> También estoy en @cz.tecno <ArrowUpRight size={16}/></a></div></div><div className="contact-bar"><button onClick={copyEmail} className="copy-mail" aria-label="Copiar correo electrónico"><Mail size={18}/><span>{EMAIL}</span>{copied ? <><Check size={17}/> COPIADO</> : <><Copy size={17}/> COPIAR</>}</button><span>HECHO CON CÓDIGO Y GANAS DE RESOLVER.</span></div></div></section>
+    </main>
+
+    <footer className="footer"><div className="shell footer-grid"><div><a href="#inicio" aria-label="Volver al inicio"><Brand inverse /></a><p>Software, soluciones IT y cosas que todavía no existen.</p></div><div><span>EXPLORAR</span><a href="#proyectos">Proyectos <ChevronRight size={14}/></a><a href="#soluciones">Soluciones <ChevronRight size={14}/></a><a href="#vision">Visión <ChevronRight size={14}/></a></div><div><span>CONECTAR</span><a href={GITHUB} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer">Instagram <ArrowUpRight size={14}/></a><a href={`mailto:${EMAIL}`}>Email <ArrowUpRight size={14}/></a></div><div className="footer-last"><span>© {new Date().getFullYear()} CZ TECNO</span><span>DISEÑADO & DESARROLLADO EN ARGENTINA.</span><a href="#inicio">VOLVER ARRIBA ↑</a></div></div></footer>
+
+    {activeProject && <div className="overlay" onMouseDown={e=>{if(e.target===e.currentTarget) setActiveProject(null);}}><section className="case-modal" role="dialog" aria-modal="true" aria-label={`Proyecto ${activeProject.name}`}><div className="modal-bar"><span>PROYECTO / {activeProject.number} · CZ TECNO</span><button ref={closeRef} className="modal-close" onClick={() => setActiveProject(null)} aria-label="Cerrar detalle"><X size={22}/></button></div><div className="modal-scroll"><div className="modal-visual"><ProjectVisual variant={activeProject.visual}/></div><div className="modal-body"><span className="eyebrow"><b>{activeProject.number}</b> / {activeProject.kind}</span><h2>{activeProject.name}<span>.</span></h2><p className="modal-subtitle">{activeProject.tagline}</p><p className="modal-description">{activeProject.description}</p><div className="modal-case"><div><span>01 / EL DESAFÍO</span><p>{activeProject.problem}</p></div><div><span>02 / LA SOLUCIÓN</span><p>{activeProject.solution}</p></div><div><span>03 / EL RESULTADO</span><p>{activeProject.result}</p></div></div><div className="modal-stack">{activeProject.stack.map(s=><span key={s}>{s}</span>)}</div><div className="modal-actions">{activeProject.url ? <a href={activeProject.url} target="_blank" rel="noreferrer" className="button button-primary">{activeProject.urlLabel} <ExternalLink size={18}/></a> : <span className="private-note">Proyecto privado o interno. No se publica código ni información de clientes.</span>}<button onClick={() => setActiveProject(null)} className="button button-ghost">Volver a proyectos <ArrowRight size={17}/></button></div></div></div></section></div>}
+
+    {commandOpen && <div className="overlay palette-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setCommandOpen(false);}}><section className="command-palette" role="dialog" aria-modal="true" aria-label="Accesos rápidos"><div className="palette-head"><Command size={19}/><span>Navegar por CZ TECNO</span><button onClick={() => setCommandOpen(false)} aria-label="Cerrar"><X size={18}/></button></div>{[['proyectos','Proyectos','01'],['soluciones','Soluciones','02'],['nosotros','Quién está detrás','03'],['vision','La visión','04'],['contacto','Contacto','05']].map(([id,title,num])=><button key={id} onClick={()=>navigate(id)} className="palette-link"><span>{num}</span>{title}<ArrowUpRight size={17}/></button>)}<div className="palette-footer">CTRL + K PARA ABRIR · ESC PARA CERRAR</div></section></div>}
   </>;
 }
 
