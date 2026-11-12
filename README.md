@@ -1,31 +1,69 @@
-# CZ Tecno — Portfolio web
+# CZ TECNO · Portfolio 2.0
 
-Portfolio profesional de **CZ Tecno**, marca de desarrollo y soluciones IT de Pedro Chiozza.
+**No es solo código. Es hacer que pase.**
 
-## Tecnologías
-React 18 · TypeScript · Vite · CSS · Lucide React. Sitio estático sin backend.
+Portfolio de **CZ TECNO**, la marca de desarrollo y soluciones tecnológicas de **Pedro Chiozza** en Ranchos, Buenos Aires, Argentina.
 
-## Ejecutar
-```powershell
-npm.cmd install
-npm.cmd run dev
+Presenta proyectos reales, servicios, forma de trabajo y visión de crecimiento: una identidad que cruza desarrollo web, backend, sistemas a medida, automatizaciones, redes e infraestructura IT.
+
+## Qué incluye
+
+- Inicio inmersivo con animaciones sutiles y composición editorial.
+- Seis proyectos reales / en desarrollo, con filtros por especialidad.
+- Casos interactivos: desafío, solución, resultado y tecnologías.
+- Sección de soluciones: webs, sistemas, bots, redes y soporte.
+- Historia personal, proceso de trabajo, stack y visión de CZ TECNO.
+- Contacto directo por email e Instagram; enlaces a GitHub y proyectos públicos.
+- Menú responsive, ventana de accesos rápidos (**Ctrl/Cmd + K**), botón para copiar correo.
+- SEO, metadatos sociales, portada SVG, favicon SVG, soporte para movimiento reducido y carga liviana.
+
+> **Importante:** Los gráficos dentro de las tarjetas son composiciones conceptuales ilustrativas, **no capturas del software real**. No se muestran datos privados, métricas de clientes ni sistemas internos.
+
+## Stack
+
+React 18 · TypeScript · Vite · CSS sin frameworks de UI · Lucide React.
+
+## Correr localmente
+
+```bash
+npm install
+npm run dev
 ```
 
-## Comprobar compilación
-```powershell
-npm.cmd run build
+Abrir la dirección que informa Vite (normalmente `http://localhost:5173`).
+
+## Compilar
+
+```bash
+npm run build
+npm run preview
 ```
 
 ## Publicar en GitHub Pages
-1. Creá un repositorio llamado `portfolio` o `cz-tecno-portfolio`.
-2. Subí todo el contenido de esta carpeta a la rama `main`.
-3. En GitHub → Settings → Pages → Source, seleccioná **GitHub Actions**.
-4. El workflow `.github/workflows/deploy.yml` instala dependencias, compila y publica automáticamente.
 
-## Personalización
-- `src/App.tsx`: textos, proyectos, email, Instagram y enlace de LinkedIn.
-- `src/styles.css`: paleta, tipografía, componentes y diseño responsive.
-- Las tarjetas de proyectos incluyen **composiciones ilustrativas**, no capturas reales. Sustituilas por capturas verificadas si querés presentar casos de clientes.
-- El enlace de LinkedIn apunta por defecto al sitio genérico: cambialo por tu perfil antes de compartir.
+El repositorio incluye `.github/workflows/deploy.yml`, que genera y publica el build automáticamente al hacer push a `main`.
 
-**Nota:** No publicar credenciales, datos de clientes ni bases de datos en este repositorio.
+1. Entrar a **Settings → Pages** del repositorio.
+2. En **Build and deployment**, configurar **Source → GitHub Actions**.
+3. Revisar el resultado en **Actions**.
+4. Abrir la URL de Pages que devuelve GitHub. Para `pedrochiozza5/portfolio`, la dirección esperada es `https://pedrochiozza5.github.io/portfolio/`, una vez publicado.
+
+El sitio usa `base: './'`, así que funciona en un subdirectorio de GitHub Pages.
+
+## Personalizar
+
+- `src/App.tsx`: textos, proyectos, categorías y enlaces.
+- `src/styles.css`: estética, responsive y animaciones.
+- `public/cover.svg`: portada social.
+- `public/favicon.svg`: favicon.
+- `index.html`: título y metadatos SEO.
+
+## Criterios
+
+- Sin backend ni formulario que guarde datos personales.
+- No compartir credenciales, datos de clientes, capturas internas ni métricas no verificadas.
+- Mantener actualizados los estados de los proyectos y usar capturas reales solo con permiso.
+
+---
+
+**CZ TECNO** · [GitHub](https://github.com/pedrochiozza5) · [Instagram](https://www.instagram.com/cz.tecno/)
