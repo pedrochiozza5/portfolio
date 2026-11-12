@@ -80,3 +80,23 @@ Las fotos se guardan dentro de `public/images/projects` y los proyectos en `src/
 **WhatsApp principal:** +54 9 2241 540585. Correo secundario: pedrochiozza5@gmail.com.
 
 **Identidad:** `public/logo-cztecno.svg` es una reproducción vectorizada del logo que compartiste, desde la captura de pantalla.
+
+
+## Editor de proyectos (CZ TECNO v2.2)
+
+Abrí el portfolio con `?editar=1` en la URL, o entrá por **Editar portfolio** en el pie de página.
+
+El editor permite cambiar nombres, descripciones, desafíos, soluciones, resultados, tecnologías, enlaces y categorías; agregar, borrar y reordenar proyectos; importar proyectos desde JSON; y cargar JPG/PNG/WEBP con optimización automática. También muestra las imágenes en las tarjetas y casos del sitio.
+
+**Importante: es un editor de borradores local, no un backend administrativo con autenticación.** El botón de edición guarda en el almacenamiento del navegador y solo modifica la vista de ese dispositivo. No guarda credenciales ni escribe directamente en GitHub. No publiques contraseñas ni información privada en las capturas o el JSON.
+
+### Cómo publicar los cambios para todo el público
+
+1. Desde la pestaña **Publicar** del editor, elegí **Copiar JSON** o **Descargar JSON**.
+2. Abrí [src/content/projects.json](https://github.com/pedrochiozza5/portfolio/edit/main/src/content/projects.json) con tu sesión de GitHub.
+3. Reemplazá el contenido por el JSON exportado y confirmá **Commit changes** en la rama `main`.
+4. El workflow de GitHub Actions recompila y publica la web. Al terminar, los visitantes ven los nuevos proyectos e imágenes.
+
+Las fotos subidas desde el editor se comprimen y se guardan como datos embebidos en el JSON; para una galería grande conviene guardar fotos en `public/images/projects/` y usar rutas relativas del tipo `images/projects/mi-foto.jpg`.
+
+El WhatsApp comercial principal es **+54 9 2241 540585**. El correo queda como contacto secundario. El logotipo vectorial fue recuperado de la imagen facilitada por el propietario.
