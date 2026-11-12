@@ -67,3 +67,16 @@ El sitio usa `base: './'`, así que funciona en un subdirectorio de GitHub Pages
 ---
 
 **CZ TECNO** · [GitHub](https://github.com/pedrochiozza5) · [Instagram](https://www.instagram.com/cz.tecno/)
+
+## Editor de proyectos e imágenes — Pages CMS
+
+1. Abrí https://app.pagescms.org e iniciá sesión con GitHub.
+2. Instalá la app de Pages CMS con acceso **solo** al repositorio `pedrochiozza5/portfolio`.
+3. Entrá a **Proyectos del portfolio**: podés editar nombres, descripciones, links, tecnologías, imágenes, agregar o quitar proyectos.
+4. Cuando guardás, Pages CMS hace un commit en GitHub y el workflow de GitHub Pages publica automáticamente el cambio.
+
+Las fotos se guardan dentro de `public/images/projects` y los proyectos en `src/content/projects.json`. Si no hay imagen, se mantiene la composición visual original. No requiere que pegues contraseñas ni tokens en la web pública.
+
+**WhatsApp principal:** +54 9 2241 540585. Correo secundario: pedrochiozza5@gmail.com.
+
+**Identidad:** `public/logo-cztecno.svg` es una reproducción vectorizada del logo que compartiste, desde la captura de pantalla.
