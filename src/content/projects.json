@@ -1,0 +1,135 @@
+[
+  {
+    "id": "puntto",
+    "number": "01",
+    "name": "Puntto Sushi",
+    "tagline": "De recibir pedidos a gestionar una operación.",
+    "category": "Sistemas",
+    "kind": "GASTRONOMÍA · PRODUCTO DIGITAL",
+    "status": "PROYECTO REAL",
+    "description": "Tienda gastronómica y sistema de gestión: pedidos por WhatsApp, administración, producción, clientes y notificaciones en un mismo flujo.",
+    "problem": "Los pedidos, la atención y la producción necesitan estar conectados para evitar pasos manuales y confusiones.",
+    "solution": "Diseñé una experiencia de compra mobile-first junto a un panel administrativo para gestionar pedidos, clientes, estados y producción.",
+    "result": "Una operación digital más ordenada, con herramientas pensadas para quien vende y para quien compra.",
+    "stack": [
+      "React",
+      "TypeScript",
+      "PHP",
+      "MySQL",
+      "PWA"
+    ],
+    "visual": "sushi",
+    "url": "https://punttosushi.com.ar/",
+    "urlLabel": "Visitar sitio",
+    "cover": ""
+  },
+  {
+    "id": "amargos",
+    "number": "02",
+    "name": "Bien Amargos",
+    "tagline": "Dos marcas. Una experiencia de compra.",
+    "category": "Web",
+    "kind": "E-COMMERCE · MULTIMARCA",
+    "status": "PROYECTO REAL",
+    "description": "E-commerce para Bien Amargos y Bien Yerbados, con catálogo, variantes, stock, carrito por WhatsApp y un administrador a medida.",
+    "problem": "Hacía falta mostrar productos y sus variantes sin complicar la compra ni la carga diaria del catálogo.",
+    "solution": "Desarrollé una tienda responsive con identidad por marca y un panel de gestión para productos, imágenes, pedidos y stock.",
+    "result": "Una base comercial que permite crecer el catálogo sin perder claridad visual ni control operativo.",
+    "stack": [
+      "React",
+      "Vite",
+      "Fastify",
+      "MySQL"
+    ],
+    "visual": "amargos",
+    "url": "https://bienamargos.com.ar/",
+    "urlLabel": "Visitar tienda",
+    "cover": ""
+  },
+  {
+    "id": "coop",
+    "number": "03",
+    "name": "COOP FLOW",
+    "tagline": "Menos tareas repetidas. Más operación.",
+    "category": "Automatización",
+    "kind": "OPERACIONES · WORKFLOWS",
+    "status": "SISTEMA INTERNO",
+    "description": "Plataforma para ordenar tareas, consultas y flujos operativos, integrando herramientas web con procesos locales.",
+    "problem": "Cuando la información está dispersa entre sistemas y personas, resolver incidentes lleva más tiempo.",
+    "solution": "Construí un panel de trabajo y conectores para centralizar información, automatizar tareas y facilitar el seguimiento.",
+    "result": "Una forma de trabajo con más trazabilidad y menos carga manual. La implementación contiene datos privados no publicados.",
+    "stack": [
+      "Node.js",
+      "MySQL",
+      "APIs",
+      "Integraciones"
+    ],
+    "visual": "coop",
+    "cover": ""
+  },
+  {
+    "id": "teros",
+    "number": "04",
+    "name": "Los Teros",
+    "tagline": "Las reservas también se pueden automatizar.",
+    "category": "Automatización",
+    "kind": "RESERVAS · WHATSAPP",
+    "status": "PROYECTO REAL",
+    "description": "Bot de reservas por WhatsApp y panel de control para canchas, horarios, cancelaciones y organización de torneos.",
+    "problem": "Coordinar turnos manualmente genera mensajes repetidos, solapamientos y tiempo perdido.",
+    "solution": "Diseñé el flujo de reservas, reglas de disponibilidad y un panel para administrar turnos y torneos.",
+    "result": "Un circuito de reserva claro para jugadores y administradores, desde el mensaje hasta la confirmación.",
+    "stack": [
+      "Node.js",
+      "WhatsApp",
+      "MySQL",
+      "Automatización"
+    ],
+    "visual": "teros",
+    "cover": ""
+  },
+  {
+    "id": "contable",
+    "number": "05",
+    "name": "CZ Contable",
+    "tagline": "Gestión compleja, interfaz clara.",
+    "category": "Sistemas",
+    "kind": "SOFTWARE DE GESTIÓN · SAAS",
+    "status": "EN DESARROLLO",
+    "description": "Sistema contable modular con empresas, asientos, movimientos, compras, ventas, períodos y trazabilidad.",
+    "problem": "Los procesos administrativos necesitan estructura, validaciones y una base confiable para crecer.",
+    "solution": "Estoy desarrollando una arquitectura modular de backend, base de datos y panel de gestión.",
+    "result": "Proyecto en evolución enfocado en mantener la información organizada y facilitar las tareas del día a día.",
+    "stack": [
+      "Next.js",
+      "NestJS",
+      "Prisma",
+      "MySQL"
+    ],
+    "visual": "contable",
+    "cover": ""
+  },
+  {
+    "id": "turnero",
+    "number": "06",
+    "name": "Turnero API",
+    "tagline": "Una buena experiencia empieza por una buena API.",
+    "category": "Backend",
+    "kind": "API REST · GESTIÓN DE TURNOS",
+    "status": "CÓDIGO PÚBLICO",
+    "description": "Backend de agenda digital con lógica de turnos, validaciones y persistencia; código disponible para explorar en GitHub.",
+    "problem": "Las agendas necesitan reglas precisas para consultar, crear y administrar reservas sin inconsistencias.",
+    "solution": "Desarrollé una API REST para estructurar la información y gestionar los turnos de manera consistente.",
+    "result": "Un proyecto técnico público que muestra mi forma de trabajar con lógica de negocio y datos.",
+    "stack": [
+      "TypeScript",
+      "Node.js",
+      "Fastify",
+      "SQLite"
+    ],
+    "visual": "turnero",
+    "url": "https://github.com/pedrochiozza5/turnero-api",
+    "urlLabel": "Ver repositorio",
+    "cover": ""
+  }
+]
