@@ -9,7 +9,7 @@ const visuals: Project['visual'][] = ['sushi','amargos','coop','teros','contable
 const github = 'https://github.com/pedrochiozza5/portfolio/edit/main/src/content/projects.json';
 const safeUrl = (v: string) => { try { return ['https:','http:'].includes(new URL(v).protocol); } catch { return false; } };
 const safeImage = (v: string) => safeUrl(v) || /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(v) || /^images\/projects\/[A-Za-z0-9._/-]+$/.test(v);
-function normalize(payload: unknown): Project[] {
+export function normalize(payload: unknown): Project[] {
   const list = Array.isArray(payload) ? payload : (payload && typeof payload === 'object' && 'projects' in payload ? (payload as {projects: unknown}).projects : null);
   if (!Array.isArray(list) || list.length > 40) throw new Error('JSON incorrecto: máximo 40 proyectos.');
   const result = list.map((entry,index):Project => {
