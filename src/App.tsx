@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
+import projectsContent from './content/projects.json';
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Braces, Check, ChevronRight,
   Code2, Command, Copy, Database, ExternalLink, Github,
   Instagram, Layers3, Mail, Menu, MonitorSmartphone, Network,
-  Settings2, ShieldCheck, Workflow, X,
+  ShieldCheck, Workflow, X,
 } from 'lucide-react';
 
 const EMAIL = 'pedrochiozza5@gmail.com';
+const WHATSAPP = 'https://wa.me/5492241540585?text=' + encodeURIComponent('Hola, vi el portfolio de CZ TECNO y quisiera consultar por un proyecto.');
+const LOGO_URL = `${import.meta.env.BASE_URL}logo-cztecno.svg`;
+const imageSrc = (path: string) => path.startsWith('https://') || path.startsWith('http://') ? path : `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
 const INSTAGRAM = 'https://www.instagram.com/cz.tecno/';
 const GITHUB = 'https://github.com/pedrochiozza5';
 
@@ -27,80 +31,24 @@ type Project = {
   result: string;
   stack: string[];
   visual: Visual;
+  cover?: string;
   url?: string;
   urlLabel?: string;
 };
 
-const projects: Project[] = [
-  {
-    id: 'puntto', number: '01', name: 'Puntto Sushi', tagline: 'De recibir pedidos a gestionar una operación.',
-    category: 'Sistemas', kind: 'GASTRONOMÍA · PRODUCTO DIGITAL', status: 'PROYECTO REAL',
-    description: 'Tienda gastronómica y sistema de gestión: pedidos por WhatsApp, administración, producción, clientes y notificaciones en un mismo flujo.',
-    problem: 'Los pedidos, la atención y la producción necesitan estar conectados para evitar pasos manuales y confusiones.',
-    solution: 'Diseñé una experiencia de compra mobile-first junto a un panel administrativo para gestionar pedidos, clientes, estados y producción.',
-    result: 'Una operación digital más ordenada, con herramientas pensadas para quien vende y para quien compra.',
-    stack: ['React', 'TypeScript', 'PHP', 'MySQL', 'PWA'], visual: 'sushi',
-    url: 'https://punttosushi.com.ar/', urlLabel: 'Visitar sitio',
-  },
-  {
-    id: 'amargos', number: '02', name: 'Bien Amargos', tagline: 'Dos marcas. Una experiencia de compra.',
-    category: 'Web', kind: 'E-COMMERCE · MULTIMARCA', status: 'PROYECTO REAL',
-    description: 'E-commerce para Bien Amargos y Bien Yerbados, con catálogo, variantes, stock, carrito por WhatsApp y un administrador a medida.',
-    problem: 'Hacía falta mostrar productos y sus variantes sin complicar la compra ni la carga diaria del catálogo.',
-    solution: 'Desarrollé una tienda responsive con identidad por marca y un panel de gestión para productos, imágenes, pedidos y stock.',
-    result: 'Una base comercial que permite crecer el catálogo sin perder claridad visual ni control operativo.',
-    stack: ['React', 'Vite', 'Fastify', 'MySQL'], visual: 'amargos',
-    url: 'https://bienamargos.com.ar/', urlLabel: 'Visitar tienda',
-  },
-  {
-    id: 'coop', number: '03', name: 'COOP FLOW', tagline: 'Menos tareas repetidas. Más operación.',
-    category: 'Automatización', kind: 'OPERACIONES · WORKFLOWS', status: 'SISTEMA INTERNO',
-    description: 'Plataforma para ordenar tareas, consultas y flujos operativos, integrando herramientas web con procesos locales.',
-    problem: 'Cuando la información está dispersa entre sistemas y personas, resolver incidentes lleva más tiempo.',
-    solution: 'Construí un panel de trabajo y conectores para centralizar información, automatizar tareas y facilitar el seguimiento.',
-    result: 'Una forma de trabajo con más trazabilidad y menos carga manual. La implementación contiene datos privados no publicados.',
-    stack: ['Node.js', 'MySQL', 'APIs', 'Integraciones'], visual: 'coop',
-  },
-  {
-    id: 'teros', number: '04', name: 'Los Teros', tagline: 'Las reservas también se pueden automatizar.',
-    category: 'Automatización', kind: 'RESERVAS · WHATSAPP', status: 'PROYECTO REAL',
-    description: 'Bot de reservas por WhatsApp y panel de control para canchas, horarios, cancelaciones y organización de torneos.',
-    problem: 'Coordinar turnos manualmente genera mensajes repetidos, solapamientos y tiempo perdido.',
-    solution: 'Diseñé el flujo de reservas, reglas de disponibilidad y un panel para administrar turnos y torneos.',
-    result: 'Un circuito de reserva claro para jugadores y administradores, desde el mensaje hasta la confirmación.',
-    stack: ['Node.js', 'WhatsApp', 'MySQL', 'Automatización'], visual: 'teros',
-  },
-  {
-    id: 'contable', number: '05', name: 'CZ Contable', tagline: 'Gestión compleja, interfaz clara.',
-    category: 'Sistemas', kind: 'SOFTWARE DE GESTIÓN · SAAS', status: 'EN DESARROLLO',
-    description: 'Sistema contable modular con empresas, asientos, movimientos, compras, ventas, períodos y trazabilidad.',
-    problem: 'Los procesos administrativos necesitan estructura, validaciones y una base confiable para crecer.',
-    solution: 'Estoy desarrollando una arquitectura modular de backend, base de datos y panel de gestión.',
-    result: 'Proyecto en evolución enfocado en mantener la información organizada y facilitar las tareas del día a día.',
-    stack: ['Next.js', 'NestJS', 'Prisma', 'MySQL'], visual: 'contable',
-  },
-  {
-    id: 'turnero', number: '06', name: 'Turnero API', tagline: 'Una buena experiencia empieza por una buena API.',
-    category: 'Backend', kind: 'API REST · GESTIÓN DE TURNOS', status: 'CÓDIGO PÚBLICO',
-    description: 'Backend de agenda digital con lógica de turnos, validaciones y persistencia; código disponible para explorar en GitHub.',
-    problem: 'Las agendas necesitan reglas precisas para consultar, crear y administrar reservas sin inconsistencias.',
-    solution: 'Desarrollé una API REST para estructurar la información y gestionar los turnos de manera consistente.',
-    result: 'Un proyecto técnico público que muestra mi forma de trabajar con lógica de negocio y datos.',
-    stack: ['TypeScript', 'Node.js', 'Fastify', 'SQLite'], visual: 'turnero',
-    url: 'https://github.com/pedrochiozza5/turnero-api', urlLabel: 'Ver repositorio',
-  },
-];
+const projects: Project[] = projectsContent as Project[];
 
 const filters: Filter[] = ['Todos', 'Web', 'Sistemas', 'Automatización', 'Backend'];
 
 function Brand({ inverse = false }: { inverse?: boolean }) {
   return <span className={`brand-lockup ${inverse ? 'brand-inverse' : ''}`}>
-    <span className="brand-symbol" aria-hidden="true"><Settings2 size={22} strokeWidth={2.5} /></span>
+    <span className="brand-symbol" aria-hidden="true"><img src={LOGO_URL} alt="" /></span>
     <span className="brand-text">cz<span>.</span>tecno</span>
   </span>;
 }
 
-function ProjectVisual({ variant }: { variant: Visual }) {
+function ProjectVisual({ variant, cover, title }: { variant: Visual; cover?: string; title?: string }) {
+  if (cover) return <div className="visual project-cover"><img src={imageSrc(cover)} alt={`Imagen del proyecto ${title ?? 'CZ TECNO'}`} loading="lazy" /><span className="project-cover-mark">CZ TECNO / PROYECTO REAL</span></div>;
   if (variant === 'sushi') return <div className="visual visual-sushi">
     <div className="v-top"><span>PUNTTO<span className="v-top-dot">●</span>SUSHI</span><span>ORDER SYSTEM / 01</span></div>
     <div className="sushi-glyph" aria-hidden="true"><span/><span/><span/></div>
@@ -134,7 +82,7 @@ function ProjectVisual({ variant }: { variant: Visual }) {
   return <div className="visual visual-turnero">
     <div className="v-top"><span>&gt; turnero_api<span className="v-top-dot">_</span></span><span>BACKEND / OPEN SOURCE</span></div>
     <div className="terminal-code"><div><span className="line-no">01</span><span className="code-purple">const</span> booking = <span className="code-yellow">await</span> api.create({'{'}</div><div><span className="line-no">02</span>&nbsp; &nbsp; date: <span className="code-green">'2026-11-12'</span>,</div><div><span className="line-no">03</span>&nbsp; &nbsp; status: <span className="code-green">'confirmed'</span></div><div><span className="line-no">04</span>{'}'});</div><div className="terminal-response"><span className="line-no">05</span>✓ 201 CREATED</div></div>
-    <div className="terminal-note">TYPE SAFE <span>✳</span> REST API <span>✳</span> DATA FIRST</div>
+    <div className="terminal-note">TYPE SAFE <span>•</span> REST API <span>•</span> DATA FIRST</div>
     <div className="v-caption">EJEMPLO ILUSTRATIVO / NO CÓDIGO DEL REPO</div>
   </div>;
 }
@@ -209,9 +157,9 @@ function App() {
         <a href="#soluciones" onClick={() => setMenuOpen(false)}>Soluciones <span>02</span></a>
         <a href="#nosotros" onClick={() => setMenuOpen(false)}>Acerca de <span>03</span></a>
         <a href="#vision" onClick={() => setMenuOpen(false)}>Visión <span>04</span></a>
-        <a className="mobile-contact" href="#contacto" onClick={() => setMenuOpen(false)}>Contacto <ArrowUpRight size={16}/></a>
+        <a className="mobile-contact" href={WHATSAPP} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>WhatsApp <ArrowUpRight size={16}/></a>
       </nav>
-      <div className="nav-actions"><button className="command-trigger" onClick={() => setCommandOpen(true)} title="Accesos rápidos (Ctrl+K)" aria-label="Abrir accesos rápidos"><Command size={15}/> <span>K</span></button><a href="#contacto" className="nav-cta">Hablemos <ArrowUpRight size={16}/></a><button className="nav-toggle" type="button" onClick={() => setMenuOpen(v => !v)} aria-expanded={menuOpen} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>{menuOpen ? <X size={23}/> : <Menu size={23}/>}</button></div>
+      <div className="nav-actions"><button className="command-trigger" onClick={() => setCommandOpen(true)} title="Accesos rápidos (Ctrl+K)" aria-label="Abrir accesos rápidos"><Command size={15}/> <span>K</span></button><a href={WHATSAPP} target="_blank" rel="noreferrer" className="nav-cta">WhatsApp <ArrowUpRight size={16}/></a><button className="nav-toggle" type="button" onClick={() => setMenuOpen(v => !v)} aria-expanded={menuOpen} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>{menuOpen ? <X size={23}/> : <Menu size={23}/>}</button></div>
     </div></header>
 
     <main>
@@ -222,7 +170,7 @@ function App() {
           <div className="hero-bottom"><p>Transformo ideas, procesos y problemas reales en <strong>webs, sistemas, automatizaciones y soluciones IT</strong> que se pueden usar, mantener y hacer crecer.</p><div className="hero-links"><a className="button button-primary" href="#proyectos">Explorar proyectos <ArrowUpRight size={20}/></a><a className="button button-text" href="#nosotros">Conocé CZ TECNO <ArrowDown size={19}/></a></div></div>
         </div>
         <div className="hero-object" aria-label="Ilustración conceptual de un sistema digital">
-          <div className="holo-grid" aria-hidden="true"/><div className="holo-ring ring-a"/><div className="holo-ring ring-b"/><div className="holo-asterisk">✳</div>
+          <div className="holo-grid" aria-hidden="true"/><div className="holo-ring ring-a"/><div className="holo-ring ring-b"/><img className="holo-brand" src={LOGO_URL} alt="" />
           <div className="floating-label float-top"><span className="tiny-indicator"/> SYSTEM ONLINE <span>● ● ●</span></div>
           <div className="floating-window"><div className="window-header"><div className="window-dots"><i/><i/><i/></div><span>cztecno / workspace</span><span>↗</span></div><div className="window-content"><small>BIENVENIDO AL PROCESO</small><strong>IDEA → <span>SOLUCIÓN</span></strong><div className="window-flow"><div><i>01</i><span>Entender</span><b>✓</b></div><div><i>02</i><span>Construir</span><b>✓</b></div><div><i>03</i><span>Evolucionar</span><b className="flow-active">↗</b></div></div></div><div className="window-bottom"><span>● READY TO BUILD</span><span>V 2.0</span></div></div>
           <div className="floating-label float-bottom">DESIGN <span>+</span> CODE <span>+</span> SYSTEMS</div>
@@ -231,17 +179,17 @@ function App() {
         <div className="hero-foot"><a href="#proyectos" className="scroll-hint"><span className="scroll-arrow"><ArrowDown size={15}/></span> SCROLL PARA EXPLORAR</a><div className="hero-foot-links"><a href={GITHUB} target="_blank" rel="noreferrer">GITHUB <ArrowUpRight size={14}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer">INSTAGRAM <ArrowUpRight size={14}/></a></div><span>01 / PORTFOLIO DIGITAL</span></div>
       </div></section>
 
-      <div className="ticker" aria-label="Áreas de trabajo"><div className="ticker-track" aria-hidden="true">{Array.from({ length: 4 }).map((_,i) => <span key={i}>DESARROLLO WEB <b>✳</b> SISTEMAS A MEDIDA <b>✳</b> AUTOMATIZACIONES <b>✳</b> NETWORKING & IT <b>✳</b> </span>)}</div></div>
+      <div className="ticker" aria-label="Áreas de trabajo"><div className="ticker-track" aria-hidden="true">{Array.from({ length: 4 }).map((_,i) => <span key={i}>DESARROLLO WEB <b>•</b> SISTEMAS A MEDIDA <b>•</b> AUTOMATIZACIONES <b>•</b> NETWORKING & IT <b>•</b> </span>)}</div></div>
 
       <section className="section projects-section" id="proyectos"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>01</b> / TRABAJO REAL</span><div className="heading-row"><h2>Proyectos que<br/><em>hablan por sí solos.</em></h2><p>No se trata solo de escribir código. Se trata de entender una necesidad y construir una herramienta que sirva.</p></div></div>
         <div className="filters reveal" role="group" aria-label="Filtrar proyectos">{filters.map(item => <button className={`filter ${filter===item?'selected':''}`} key={item} aria-pressed={filter===item} onClick={() => setFilter(item)}>{item}{item==='Todos' && <sup>{projects.length.toString().padStart(2,'0')}</sup>}</button>)}</div>
         <div className="project-grid">{shown.map((project,i) => <article className={`project-card reveal ${i<2?'project-featured':''}`} key={project.id}>
-          <button className="project-art-action" type="button" onClick={() => setActiveProject(project)} aria-label={`Explorar el proyecto ${project.name}`}><ProjectVisual variant={project.visual}/><span className="art-open"><ArrowUpRight size={23}/></span></button>
+          <button className="project-art-action" type="button" onClick={() => setActiveProject(project)} aria-label={`Explorar el proyecto ${project.name}`}><ProjectVisual variant={project.visual} cover={project.cover} title={project.name}/><span className="art-open"><ArrowUpRight size={23}/></span></button>
           <div className="project-info"><div className="project-meta"><span>{project.number} / {project.kind}</span><span className="status-label"><i/>{project.status}</span></div><div className="project-title"><h3>{project.name}</h3><button onClick={() => setActiveProject(project)} aria-label={`Leer el caso de ${project.name}`} className="project-more"><ArrowUpRight size={23}/></button></div><p className="project-tagline">{project.tagline}</p><p className="project-description">{project.description}</p><div className="project-footer"><div>{project.stack.slice(0,3).map(item => <span key={item}>{item}</span>)}</div><button onClick={() => setActiveProject(project)} className="inline-link">Ver caso <ArrowRight size={17}/></button></div></div>
         </article>)}</div><div className="more-work reveal"><span>HAY MÁS IDEAS CONVIRTIÉNDOSE EN PROYECTOS.</span><a href={GITHUB} target="_blank" rel="noreferrer">Explorar mi GitHub <Github size={18}/><ArrowUpRight size={17}/></a></div>
       </div></section>
 
-      <section className="manifesto-band"><div className="shell"><span>NO HAGO TECNOLOGÍA POR HACER TECNOLOGÍA.</span><p>LA HAGO PARA QUE <em>ALGO FUNCIONE MEJOR.</em></p><span className="band-asterisk">✳</span></div></section>
+      <section className="manifesto-band"><div className="shell"><span>NO HAGO TECNOLOGÍA POR HACER TECNOLOGÍA.</span><p>LA HAGO PARA QUE <em>ALGO FUNCIONE MEJOR.</em></p><span className="band-asterisk">•</span></div></section>
 
       <section className="section solutions-section" id="soluciones"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>02</b> / SOLUCIONES</span><div className="heading-row"><h2>Un problema.<br/><em>Muchas formas de resolverlo.</em></h2><p>Mi diferencial es unir desarrollo, soporte e infraestructura en una misma mirada: lo que diseño también tiene que funcionar en la vida real.</p></div></div>
         <div className="solutions-list"><article className="solution reveal"><span className="solution-index">01 /</span><div className="solution-icon"><MonitorSmartphone size={30}/></div><div><h3>Webs & e-commerce</h3><p>Sitios con identidad, tiendas, catálogos y experiencias mobile-first que ayudan a mostrar y vender mejor.</p><span>REACT · UI/UX · TIENDAS</span></div><ArrowUpRight className="solution-arrow" size={24}/></article>
@@ -254,16 +202,16 @@ function App() {
 
       <section className="section process-section"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>04</b> / FORMA DE TRABAJAR</span><div className="heading-row"><h2>De “tengo una idea”<br/><em>a “ya está funcionando”.</em></h2><p>Un proceso simple, sin vueltas ni promesas imposibles.</p></div></div><div className="process-grid"><div className="process-step reveal"><span>01 <span>→</span></span><h3>Escuchar</h3><p>Entender qué pasa hoy, qué no funciona y qué vale la pena mejorar.</p></div><div className="process-step reveal"><span>02 <span>→</span></span><h3>Diseñar</h3><p>Convertir esa necesidad en un flujo, una interfaz y una solución concreta.</p></div><div className="process-step reveal"><span>03 <span>→</span></span><h3>Construir</h3><p>Desarrollar, probar, integrar y poner en funcionamiento.</p></div><div className="process-step reveal"><span>04 <span>↗</span></span><h3>Evolucionar</h3><p>Medir lo que sirve, corregir lo que falta y seguir mejorando.</p></div></div></div></section>
 
-      <section className="vision-section" id="vision"><div className="shell vision-layout"><div className="vision-copy reveal"><span className="eyebrow"><b>05</b> / LO QUE VIENE</span><h2>Hoy construyo soluciones.<br/><em>Mañana, productos que crezcan.</em></h2><p>Quiero llevar CZ TECNO de resolver necesidades puntuales a construir un estudio de software y automatización con productos propios, sistemas escalables y relaciones a largo plazo.</p><p>No se trata de hacer más por hacer más. Se trata de crear herramientas que le simplifiquen la vida a personas y negocios.</p><div className="vision-tags"><span>PRODUCTOS PROPIOS</span><span>SOFTWARE ÚTIL</span><span>CRECIMIENTO SOSTENIBLE</span></div></div><div className="vision-art reveal" aria-hidden="true"><div className="vision-orbit orbit-1"/><div className="vision-orbit orbit-2"/><span className="vision-star">✳</span><span className="vision-center">WHAT'S<br/><em>NEXT?</em></span><span className="vision-stamp">ALWAYS BUILDING / CZ TECNO</span></div></div></section>
+      <section className="vision-section" id="vision"><div className="shell vision-layout"><div className="vision-copy reveal"><span className="eyebrow"><b>05</b> / LO QUE VIENE</span><h2>Hoy construyo soluciones.<br/><em>Mañana, productos que crezcan.</em></h2><p>Quiero llevar CZ TECNO de resolver necesidades puntuales a construir un estudio de software y automatización con productos propios, sistemas escalables y relaciones a largo plazo.</p><p>No se trata de hacer más por hacer más. Se trata de crear herramientas que le simplifiquen la vida a personas y negocios.</p><div className="vision-tags"><span>PRODUCTOS PROPIOS</span><span>SOFTWARE ÚTIL</span><span>CRECIMIENTO SOSTENIBLE</span></div></div><div className="vision-art reveal" aria-hidden="true"><div className="vision-orbit orbit-1"/><div className="vision-orbit orbit-2"/><span className="vision-star" aria-hidden="true">×</span><span className="vision-center">WHAT'S<br/><em>NEXT?</em></span><span className="vision-stamp">ALWAYS BUILDING / CZ TECNO</span></div></div></section>
 
-      <section className="section stack-section"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>06</b> / TECNOLOGÍAS</span><div className="heading-row"><h2>El stack cambia.<br/><em>La intención, no.</em></h2><p>Elijo herramientas por lo que resuelven. Estas son algunas de las que uso en mis proyectos y en mi trabajo técnico.</p></div></div><div className="stack-rows reveal"><div><span><Code2 size={18}/> FRONTEND</span><p>React <i>✳</i> TypeScript <i>✳</i> JavaScript <i>✳</i> HTML & CSS</p></div><div><span><Braces size={18}/> BACKEND</span><p>Node.js <i>✳</i> Fastify <i>✳</i> NestJS <i>✳</i> PHP <i>✳</i> Python</p></div><div><span><Layers3 size={18}/> DATOS & DEVOPS</span><p>MySQL <i>✳</i> SQLite <i>✳</i> Prisma <i>✳</i> Docker <i>✳</i> Git</p></div><div><span><ShieldCheck size={18}/> INFRAESTRUCTURA</span><p>Linux <i>✳</i> Windows Server <i>✳</i> MikroTik <i>✳</i> Networking</p></div></div></div></section>
+      <section className="section stack-section"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>06</b> / TECNOLOGÍAS</span><div className="heading-row"><h2>El stack cambia.<br/><em>La intención, no.</em></h2><p>Elijo herramientas por lo que resuelven. Estas son algunas de las que uso en mis proyectos y en mi trabajo técnico.</p></div></div><div className="stack-rows reveal"><div><span><Code2 size={18}/> FRONTEND</span><p>React <i>•</i> TypeScript <i>•</i> JavaScript <i>•</i> HTML & CSS</p></div><div><span><Braces size={18}/> BACKEND</span><p>Node.js <i>•</i> Fastify <i>•</i> NestJS <i>•</i> PHP <i>•</i> Python</p></div><div><span><Layers3 size={18}/> DATOS & DEVOPS</span><p>MySQL <i>•</i> SQLite <i>•</i> Prisma <i>•</i> Docker <i>•</i> Git</p></div><div><span><ShieldCheck size={18}/> INFRAESTRUCTURA</span><p>Linux <i>•</i> Windows Server <i>•</i> MikroTik <i>•</i> Networking</p></div></div></div></section>
 
-      <section className="contact-section" id="contacto"><div className="shell contact-shell"><span className="eyebrow"><b>07</b> / CONSTRUYAMOS ALGO</span><div className="contact-flex"><div><p>¿Tenés un problema que necesita una solución?</p><h2>CONTAME<br/><em>LA IDEA.</em><span>↗</span></h2></div><div className="contact-side"><p>Una web. Un sistema. Una automatización. O simplemente algo que no está funcionando como debería. Arranquemos por una charla.</p><a href={`mailto:${EMAIL}?subject=Proyecto%20para%20CZ%20TECNO`} className="button button-primary">Hablemos de tu proyecto <ArrowUpRight size={20}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer" className="instagram-link"><Instagram size={19}/> También estoy en @cz.tecno <ArrowUpRight size={16}/></a></div></div><div className="contact-bar"><button onClick={copyEmail} className="copy-mail" aria-label="Copiar correo electrónico"><Mail size={18}/><span>{EMAIL}</span>{copied ? <><Check size={17}/> COPIADO</> : <><Copy size={17}/> COPIAR</>}</button><span>HECHO CON CÓDIGO Y GANAS DE RESOLVER.</span></div></div></section>
+      <section className="contact-section" id="contacto"><div className="shell contact-shell"><span className="eyebrow"><b>07</b> / CONSTRUYAMOS ALGO</span><div className="contact-flex"><div><p>¿Tenés un problema que necesita una solución?</p><h2>CONTAME<br/><em>LA IDEA.</em><span>↗</span></h2></div><div className="contact-side"><p>Una web. Un sistema. Una automatización. O simplemente algo que no está funcionando como debería. Arranquemos por una charla.</p><a href={WHATSAPP} target="_blank" rel="noreferrer" className="button button-primary">Hablemos por WhatsApp <ArrowUpRight size={20}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer" className="instagram-link"><Instagram size={19}/> También estoy en @cz.tecno <ArrowUpRight size={16}/></a></div></div><div className="contact-bar"><a className="contact-whatsapp" href={WHATSAPP} target="_blank" rel="noreferrer">WhatsApp: +54 9 2241 540585 <ArrowUpRight size={17}/></a><button onClick={copyEmail} className="copy-mail" aria-label="Copiar correo electrónico"><Mail size={18}/><span>{EMAIL}</span>{copied ? <><Check size={17}/> COPIADO</> : <><Copy size={17}/> COPIAR</>}</button><span>HECHO CON CÓDIGO Y GANAS DE RESOLVER.</span></div></div></section>
     </main>
 
-    <footer className="footer"><div className="shell footer-grid"><div><a href="#inicio" aria-label="Volver al inicio"><Brand inverse /></a><p>Software, soluciones IT y cosas que todavía no existen.</p></div><div><span>EXPLORAR</span><a href="#proyectos">Proyectos <ChevronRight size={14}/></a><a href="#soluciones">Soluciones <ChevronRight size={14}/></a><a href="#vision">Visión <ChevronRight size={14}/></a></div><div><span>CONECTAR</span><a href={GITHUB} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer">Instagram <ArrowUpRight size={14}/></a><a href={`mailto:${EMAIL}`}>Email <ArrowUpRight size={14}/></a></div><div className="footer-last"><span>© {new Date().getFullYear()} CZ TECNO</span><span>DISEÑADO & DESARROLLADO EN ARGENTINA.</span><a href="#inicio">VOLVER ARRIBA ↑</a></div></div></footer>
+    <footer className="footer"><div className="shell footer-grid"><div><a href="#inicio" aria-label="Volver al inicio"><Brand inverse /></a><p>Software, soluciones IT y cosas que todavía no existen.</p></div><div><span>EXPLORAR</span><a href="#proyectos">Proyectos <ChevronRight size={14}/></a><a href="#soluciones">Soluciones <ChevronRight size={14}/></a><a href="#vision">Visión <ChevronRight size={14}/></a></div><div><span>CONECTAR</span><a href={GITHUB} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer">Instagram <ArrowUpRight size={14}/></a><a href={WHATSAPP} target="_blank" rel="noreferrer">WhatsApp <ArrowUpRight size={14}/></a><a href={`mailto:${EMAIL}`}>Email <ArrowUpRight size={14}/></a></div><div className="footer-last"><span>© {new Date().getFullYear()} CZ TECNO</span><span>DISEÑADO & DESARROLLADO EN ARGENTINA.</span><a href="#inicio">VOLVER ARRIBA ↑</a></div></div></footer>
 
-    {activeProject && <div className="overlay" onMouseDown={e=>{if(e.target===e.currentTarget) setActiveProject(null);}}><section className="case-modal" role="dialog" aria-modal="true" aria-label={`Proyecto ${activeProject.name}`}><div className="modal-bar"><span>PROYECTO / {activeProject.number} · CZ TECNO</span><button ref={closeRef} className="modal-close" onClick={() => setActiveProject(null)} aria-label="Cerrar detalle"><X size={22}/></button></div><div className="modal-scroll"><div className="modal-visual"><ProjectVisual variant={activeProject.visual}/></div><div className="modal-body"><span className="eyebrow"><b>{activeProject.number}</b> / {activeProject.kind}</span><h2>{activeProject.name}<span>.</span></h2><p className="modal-subtitle">{activeProject.tagline}</p><p className="modal-description">{activeProject.description}</p><div className="modal-case"><div><span>01 / EL DESAFÍO</span><p>{activeProject.problem}</p></div><div><span>02 / LA SOLUCIÓN</span><p>{activeProject.solution}</p></div><div><span>03 / EL RESULTADO</span><p>{activeProject.result}</p></div></div><div className="modal-stack">{activeProject.stack.map(s=><span key={s}>{s}</span>)}</div><div className="modal-actions">{activeProject.url ? <a href={activeProject.url} target="_blank" rel="noreferrer" className="button button-primary">{activeProject.urlLabel} <ExternalLink size={18}/></a> : <span className="private-note">Proyecto privado o interno. No se publica código ni información de clientes.</span>}<button onClick={() => setActiveProject(null)} className="button button-ghost">Volver a proyectos <ArrowRight size={17}/></button></div></div></div></section></div>}
+    {activeProject && <div className="overlay" onMouseDown={e=>{if(e.target===e.currentTarget) setActiveProject(null);}}><section className="case-modal" role="dialog" aria-modal="true" aria-label={`Proyecto ${activeProject.name}`}><div className="modal-bar"><span>PROYECTO / {activeProject.number} · CZ TECNO</span><button ref={closeRef} className="modal-close" onClick={() => setActiveProject(null)} aria-label="Cerrar detalle"><X size={22}/></button></div><div className="modal-scroll"><div className="modal-visual"><ProjectVisual variant={activeProject.visual} cover={activeProject.cover} title={activeProject.name}/></div><div className="modal-body"><span className="eyebrow"><b>{activeProject.number}</b> / {activeProject.kind}</span><h2>{activeProject.name}<span>.</span></h2><p className="modal-subtitle">{activeProject.tagline}</p><p className="modal-description">{activeProject.description}</p><div className="modal-case"><div><span>01 / EL DESAFÍO</span><p>{activeProject.problem}</p></div><div><span>02 / LA SOLUCIÓN</span><p>{activeProject.solution}</p></div><div><span>03 / EL RESULTADO</span><p>{activeProject.result}</p></div></div><div className="modal-stack">{activeProject.stack.map(s=><span key={s}>{s}</span>)}</div><div className="modal-actions">{activeProject.url ? <a href={activeProject.url} target="_blank" rel="noreferrer" className="button button-primary">{activeProject.urlLabel} <ExternalLink size={18}/></a> : <span className="private-note">Proyecto privado o interno. No se publica código ni información de clientes.</span>}<button onClick={() => setActiveProject(null)} className="button button-ghost">Volver a proyectos <ArrowRight size={17}/></button></div></div></div></section></div>}
 
     {commandOpen && <div className="overlay palette-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setCommandOpen(false);}}><section className="command-palette" role="dialog" aria-modal="true" aria-label="Accesos rápidos"><div className="palette-head"><Command size={19}/><span>Navegar por CZ TECNO</span><button onClick={() => setCommandOpen(false)} aria-label="Cerrar"><X size={18}/></button></div>{[['proyectos','Proyectos','01'],['soluciones','Soluciones','02'],['nosotros','Quién está detrás','03'],['vision','La visión','04'],['contacto','Contacto','05']].map(([id,title,num])=><button key={id} onClick={()=>navigate(id)} className="palette-link"><span>{num}</span>{title}<ArrowUpRight size={17}/></button>)}<div className="palette-footer">CTRL + K PARA ABRIR · ESC PARA CERRAR</div></section></div>}
   </>;
