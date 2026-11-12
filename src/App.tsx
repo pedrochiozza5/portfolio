@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import projectsContent from './content/projects.json';
+import ProjectEditor, { normalize as normalizeProjects } from './ProjectEditor';
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Braces, Check, ChevronRight,
   Code2, Command, Copy, Database, ExternalLink, Github,
@@ -10,14 +11,14 @@ import {
 const EMAIL = 'pedrochiozza5@gmail.com';
 const WHATSAPP = 'https://wa.me/5492241540585?text=' + encodeURIComponent('Hola, vi el portfolio de CZ TECNO y quisiera consultar por un proyecto.');
 const LOGO_URL = `${import.meta.env.BASE_URL}logo-cztecno.svg`;
-const imageSrc = (path: string) => path.startsWith('https://') || path.startsWith('http://') ? path : `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+const imageSrc = (path: string) => path.startsWith('https://') || path.startsWith('http://') || path.startsWith('data:image/') ? path : `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
 const INSTAGRAM = 'https://www.instagram.com/cz.tecno/';
 const GITHUB = 'https://github.com/pedrochiozza5';
 
 type Category = 'Web' | 'Sistemas' | 'Automatización' | 'Backend';
 type Filter = 'Todos' | Category;
 type Visual = 'sushi' | 'amargos' | 'coop' | 'teros' | 'contable' | 'turnero';
-type Project = {
+export type Project = {
   id: string;
   number: string;
   name: string;
@@ -36,7 +37,7 @@ type Project = {
   urlLabel?: string;
 };
 
-const projects: Project[] = projectsContent as Project[];
+const defaultProjects: Project[] = projectsContent as Project[];
 
 const filters: Filter[] = ['Todos', 'Web', 'Sistemas', 'Automatización', 'Backend'];
 
@@ -88,6 +89,14 @@ function ProjectVisual({ variant, cover, title }: { variant: Visual; cover?: str
 }
 
 function App() {
+  const [projects, setProjects] = useState<Project[]>(() => {
+    try {
+      const stored = localStorage.getItem('cztecno.portfolio.projects.v1');
+      return stored ? normalizeProjects(JSON.parse(stored)) : defaultProjects;
+    } catch { return defaultProjects; }
+  });
+  const [editorOpen,setEditorOpen] = useState(() => new URLSearchParams(window.location.search).has('editar'));
+  const [saveFailed,setSaveFailed] = useState(false);
   const [filter, setFilter] = useState<Filter>('Todos');
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
@@ -96,6 +105,11 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const closeRef = useRef<HTMLButtonElement>(null);
   const shown = filter === 'Todos' ? projects : projects.filter(project => project.category === filter);
+
+  useEffect(() => {
+    try { localStorage.setItem('cztecno.portfolio.projects.v1', JSON.stringify(projects)); setSaveFailed(false); }
+    catch { setSaveFailed(true); }
+  }, [projects]);
 
   useEffect(() => {
     const update = () => {
@@ -119,17 +133,17 @@ function App() {
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setCommandOpen(v => !v); }
-      if (event.key === 'Escape') { setActiveProject(null); setCommandOpen(false); setMenuOpen(false); }
+      if (event.key === 'Escape') { setActiveProject(null); setCommandOpen(false); setMenuOpen(false); setEditorOpen(false); }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = activeProject || commandOpen || menuOpen ? 'hidden' : '';
+    document.body.style.overflow = activeProject || commandOpen || menuOpen || editorOpen ? 'hidden' : '';
     if (activeProject) closeRef.current?.focus();
     return () => { document.body.style.overflow = ''; };
-  }, [activeProject, commandOpen, menuOpen]);
+  }, [activeProject, commandOpen, menuOpen, editorOpen]);
 
   useEffect(() => {
     const onMove = (event: PointerEvent) => {
@@ -209,11 +223,20 @@ function App() {
       <section className="contact-section" id="contacto"><div className="shell contact-shell"><span className="eyebrow"><b>07</b> / CONSTRUYAMOS ALGO</span><div className="contact-flex"><div><p>¿Tenés un problema que necesita una solución?</p><h2>CONTAME<br/><em>LA IDEA.</em><span>↗</span></h2></div><div className="contact-side"><p>Una web. Un sistema. Una automatización. O simplemente algo que no está funcionando como debería. Arranquemos por una charla.</p><a href={WHATSAPP} target="_blank" rel="noreferrer" className="button button-primary">Hablemos por WhatsApp <ArrowUpRight size={20}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer" className="instagram-link"><Instagram size={19}/> También estoy en @cz.tecno <ArrowUpRight size={16}/></a></div></div><div className="contact-bar"><a className="contact-whatsapp" href={WHATSAPP} target="_blank" rel="noreferrer">WhatsApp: +54 9 2241 540585 <ArrowUpRight size={17}/></a><button onClick={copyEmail} className="copy-mail" aria-label="Copiar correo electrónico"><Mail size={18}/><span>{EMAIL}</span>{copied ? <><Check size={17}/> COPIADO</> : <><Copy size={17}/> COPIAR</>}</button><span>HECHO CON CÓDIGO Y GANAS DE RESOLVER.</span></div></div></section>
     </main>
 
-    <footer className="footer"><div className="shell footer-grid"><div><a href="#inicio" aria-label="Volver al inicio"><Brand inverse /></a><p>Software, soluciones IT y cosas que todavía no existen.</p></div><div><span>EXPLORAR</span><a href="#proyectos">Proyectos <ChevronRight size={14}/></a><a href="#soluciones">Soluciones <ChevronRight size={14}/></a><a href="#vision">Visión <ChevronRight size={14}/></a></div><div><span>CONECTAR</span><a href={GITHUB} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer">Instagram <ArrowUpRight size={14}/></a><a href={WHATSAPP} target="_blank" rel="noreferrer">WhatsApp <ArrowUpRight size={14}/></a><a href={`mailto:${EMAIL}`}>Email <ArrowUpRight size={14}/></a></div><div className="footer-last"><span>© {new Date().getFullYear()} CZ TECNO</span><span>DISEÑADO & DESARROLLADO EN ARGENTINA.</span><a href="#inicio">VOLVER ARRIBA ↑</a></div></div></footer>
+    <footer className="footer"><div className="shell footer-grid"><div><a href="#inicio" aria-label="Volver al inicio"><Brand inverse /></a><p>Software, soluciones IT y cosas que todavía no existen.</p></div><div><span>EXPLORAR</span><a href="#proyectos">Proyectos <ChevronRight size={14}/></a><a href="#soluciones">Soluciones <ChevronRight size={14}/></a><a href="#vision">Visión <ChevronRight size={14}/></a></div><div><span>CONECTAR</span><a href={GITHUB} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer">Instagram <ArrowUpRight size={14}/></a><a href={WHATSAPP} target="_blank" rel="noreferrer">WhatsApp <ArrowUpRight size={14}/></a><a href={`mailto:${EMAIL}`}>Email <ArrowUpRight size={14}/></a></div><div className="footer-last"><span>© {new Date().getFullYear()} CZ TECNO</span><span>DISEÑADO & DESARROLLADO EN ARGENTINA.</span><a href="#inicio">VOLVER ARRIBA ↑</a><button className="footer-editor-link" type="button" onClick={() => setEditorOpen(true)}>Editar portfolio</button></div></div></footer>
 
     {activeProject && <div className="overlay" onMouseDown={e=>{if(e.target===e.currentTarget) setActiveProject(null);}}><section className="case-modal" role="dialog" aria-modal="true" aria-label={`Proyecto ${activeProject.name}`}><div className="modal-bar"><span>PROYECTO / {activeProject.number} · CZ TECNO</span><button ref={closeRef} className="modal-close" onClick={() => setActiveProject(null)} aria-label="Cerrar detalle"><X size={22}/></button></div><div className="modal-scroll"><div className="modal-visual"><ProjectVisual variant={activeProject.visual} cover={activeProject.cover} title={activeProject.name}/></div><div className="modal-body"><span className="eyebrow"><b>{activeProject.number}</b> / {activeProject.kind}</span><h2>{activeProject.name}<span>.</span></h2><p className="modal-subtitle">{activeProject.tagline}</p><p className="modal-description">{activeProject.description}</p><div className="modal-case"><div><span>01 / EL DESAFÍO</span><p>{activeProject.problem}</p></div><div><span>02 / LA SOLUCIÓN</span><p>{activeProject.solution}</p></div><div><span>03 / EL RESULTADO</span><p>{activeProject.result}</p></div></div><div className="modal-stack">{activeProject.stack.map(s=><span key={s}>{s}</span>)}</div><div className="modal-actions">{activeProject.url ? <a href={activeProject.url} target="_blank" rel="noreferrer" className="button button-primary">{activeProject.urlLabel} <ExternalLink size={18}/></a> : <span className="private-note">Proyecto privado o interno. No se publica código ni información de clientes.</span>}<button onClick={() => setActiveProject(null)} className="button button-ghost">Volver a proyectos <ArrowRight size={17}/></button></div></div></div></section></div>}
 
     {commandOpen && <div className="overlay palette-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setCommandOpen(false);}}><section className="command-palette" role="dialog" aria-modal="true" aria-label="Accesos rápidos"><div className="palette-head"><Command size={19}/><span>Navegar por CZ TECNO</span><button onClick={() => setCommandOpen(false)} aria-label="Cerrar"><X size={18}/></button></div>{[['proyectos','Proyectos','01'],['soluciones','Soluciones','02'],['nosotros','Quién está detrás','03'],['vision','La visión','04'],['contacto','Contacto','05']].map(([id,title,num])=><button key={id} onClick={()=>navigate(id)} className="palette-link"><span>{num}</span>{title}<ArrowUpRight size={17}/></button>)}<div className="palette-footer">CTRL + K PARA ABRIR · ESC PARA CERRAR</div></section></div>}
+    {editorOpen && <ProjectEditor projects={projects} setProjects={setProjects} saveFailed={saveFailed} onReset={() => {
+      try { localStorage.removeItem('cztecno.portfolio.projects.v1'); } catch { /* Browser storage unavailable */ }
+      setProjects(defaultProjects);
+    }} onClose={() => {
+      setEditorOpen(false);
+      const url=new URL(window.location.href);
+      url.searchParams.delete('editar');
+      window.history.replaceState({},'',url.pathname+url.search+url.hash);
+    }} />}
   </>;
 }
 
