@@ -1,0 +1,73 @@
+# CZ TECNO — panel visual seguro de proyectos e imágenes
+media:
+  input: public/images/projects
+  output: /images/projects
+  rename: safe
+  extensions: [png, jpg, jpeg, webp, avif, svg]
+content:
+  - name: proyectos
+    label: Proyectos del portfolio
+    type: file
+    path: src/content/projects.json
+    format: json
+    list: true
+    fields:
+      - name: id
+        label: Identificador único
+        type: string
+        required: true
+      - name: number
+        label: Orden visible (01, 02, ...)
+        type: string
+      - name: name
+        label: Nombre del proyecto
+        type: string
+        required: true
+      - name: cover
+        label: Imagen de portada
+        type: image
+        description: Si no hay imagen se mantiene la ilustración actual.
+      - name: tagline
+        label: Frase corta
+        type: string
+      - name: category
+        label: Categoría
+        type: select
+        options:
+          values: [Web, Sistemas, Automatización, Backend]
+      - name: kind
+        label: Tipo de trabajo
+        type: string
+      - name: status
+        label: Estado
+        type: string
+      - name: description
+        label: Resumen
+        type: text
+      - name: problem
+        label: Problema inicial
+        type: text
+      - name: solution
+        label: Solución desarrollada
+        type: text
+      - name: result
+        label: Resultado
+        type: text
+      - name: stack
+        label: Tecnologías
+        type: string
+        list: true
+      - name: visual
+        label: Ilustración alternativa
+        type: select
+        options:
+          values: [sushi, amargos, coop, teros, contable, turnero]
+      - name: url
+        label: Enlace externo
+        type: string
+      - name: urlLabel
+        label: Texto del enlace
+        type: string
+settings:
+  content:
+    merge: true
