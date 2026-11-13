@@ -144,3 +144,98 @@ body{background:#0B0F14}
  .project-meta>span:first-child{font-size:9px}
  .vision-copy p{color:#F5F7FA}
 }
+
+
+/* V4 / Premium trust-led experience — mantiene editor y paleta original */
+:root{--accent:#4DB8FF;--deep:#0F2D52;--paper:#F5F7FA;--bg:#0B0F14;--line:#314961}
+body{background:#0B0F14}
+.site-header,.is-scrolled .site-header{background:rgba(10,15,22,.89);backdrop-filter:blur(26px);border-bottom:1px solid #76caff27}
+.nav-shell{gap:18px}
+.brand-partner{display:inline-flex;align-items:center;gap:9px;line-height:1;white-space:nowrap}
+.brand-partner-logo{display:block;width:31px;height:31px;object-fit:cover;border-radius:50%;border:1px solid #9edaff50}
+.hero{background:#0B0F14}
+.hero::before{background:radial-gradient(ellipse at 72% 42%,#1766a342,transparent 50%),radial-gradient(ellipse at 12% 80%,#10375b66,transparent 46%)}
+.hero-mini{color:#bfe5ff}
+.hero-team-badge{display:inline-flex;align-items:center;gap:9px;padding:9px 12px;margin:4px 0 22px;border:1px solid #6ec4ff50;background:#112438;border-radius:999px;box-shadow:0 9px 24px #0004}
+.hero-team-badge img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:1px solid #b9e5ff60;background:white;flex-shrink:0}
+.hero-team-badge span{color:#4DB8FF;font:700 21px var(--display)}
+.hero-team-badge strong{font:700 10px var(--mono);letter-spacing:.7px;color:#d9ecfb;white-space:nowrap;padding:0 4px}
+.hero h1{font-size:clamp(59px,6.35vw,118px);letter-spacing:-6px;line-height:.94;margin-top:2px}
+.hero h1>span{color:#63C7FF}
+.hero h1>em{color:#fff}
+.hero-desc{color:#c4d6e3}
+.hero-bottom p{color:#bed0df}
+.hero-bottom p strong{color:#fff}
+.hero-object{min-height:640px}
+.floating-window{background:linear-gradient(150deg,#203b56,#0d1827 65%);box-shadow:0 32px 120px #0009,0 0 0 1px #7ac9f84d}
+.window-content>strong span{color:#77caff}
+.holo-brand{box-shadow:0 14px 40px #0008,0 0 0 2px #9edaff4d}
+.credibility-strip{background:#102039;border-top:1px solid #8edaff28;border-bottom:1px solid #8edaff28;position:relative;z-index:2}
+.credibility-strip-inner{min-height:73px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.credibility-strip-inner>span{display:inline-flex;align-items:center;gap:7px;color:#e1f0fb;font:600 12px var(--display);white-space:nowrap}
+.credibility-strip-inner svg{color:#70caff}
+.trust-section{padding:115px 0 125px;background:radial-gradient(circle at 84% 15%,#10476d44,transparent 40%),#101825;color:#F5F7FA}
+.trust-intro{display:grid;grid-template-columns:1.1fr .9fr;column-gap:75px;align-items:end;max-width:1200px;margin-bottom:46px}
+.trust-intro .eyebrow{grid-column:1/-1;margin-bottom:30px}
+.trust-intro h2{font:700 clamp(42px,5vw,74px)/1.04 var(--display);letter-spacing:-3.8px;margin:0;max-width:780px}
+.trust-intro h2 em{color:#75c9ff;font-style:normal}
+.trust-intro p{font-size:16px;line-height:1.8;color:#b6cddd;margin:0;max-width:460px}
+.trust-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.trust-tile{padding:30px 25px 32px;background:linear-gradient(150deg,#192d41,#111a27 70%);border:1px solid #50718b6b;min-height:315px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:background .25s,transform .25s,border-color .25s}
+.trust-tile::after{content:"";position:absolute;width:165px;height:165px;border:1px solid #4DB8FF24;border-radius:50%;right:-78px;top:-90px;pointer-events:none}
+.trust-tile:hover{border-color:#76d0ffbb;background:#193650;transform:translateY(-5px)}
+.trust-tile>span{font:11px var(--mono);color:#9dc3df}
+.trust-glyph{margin:29px 0 23px;width:50px;height:50px;border:1px solid #8edaff5c;background:#123f61;display:grid;place-items:center;color:#8ad4ff}
+.trust-tile h3{font:700 23px/1.1 var(--display);letter-spacing:-.7px;margin:0 0 14px}
+.trust-tile p{font:14px/1.75 var(--display);color:#b5c7d6;margin:0}
+.hero .btn,.contact-section .button{transition:transform .2s,background .2s}
+.button-primary:hover{transform:translateY(-2px)}
+.projects-section .section-heading h2 em{color:#77ccff}
+.project-art-action{border:1px solid #7fcaff1a}
+.project-card{transition:transform .28s}
+.project-card:hover{transform:translateY(-3px)}
+.project-info{background:#111c29}
+.project-info h3{letter-spacing:-1.6px}
+.project-owner{border-color:#689ec1;color:#9fd8ff}
+.team-card{border:1px solid #648aaa60;box-shadow:0 20px 65px #0003}
+.team-mark-bc{border-radius:50%;overflow:hidden;padding:0;border:2px solid #9bdcff80;background:#0B0F14}
+.team-mark-bc img{width:100%;height:100%;object-fit:cover}
+.team-card h3{letter-spacing:-2px}
+.team-card p{line-height:1.75}
+.team-card:hover{border-color:#7ed0ff98;box-shadow:0 28px 80px #0005}
+.brand-lockup{gap:9px}
+@media(max-width:1140px){
+ .credibility-strip-inner{justify-content:center;padding:18px 0;gap:12px 28px}
+ .trust-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .trust-tile{min-height:270px}
+ .trust-intro{column-gap:35px}
+}
+@media(max-width:900px){
+ .brand-partner{display:none}
+ .hero h1{font-size:clamp(58px,9vw,88px)}
+ .hero-object{min-height:460px}
+ .trust-intro{grid-template-columns:1fr;gap:20px}
+ .trust-intro .eyebrow{grid-column:auto;margin:0}
+}
+@media(max-width:680px){
+ .hero-team-badge{max-width:100%;gap:6px;margin:0 0 15px;padding:7px 10px}
+ .hero-team-badge img{width:31px;height:31px}
+ .hero-team-badge strong{font-size:9px;white-space:normal;line-height:1.4}
+ .hero h1{font-size:clamp(45px,12.4vw,70px)!important;line-height:.96;letter-spacing:-2.9px!important;margin-bottom:20px}
+ .hero-copy{padding-top:52px}
+ .hero-bottom p{font-size:15px;line-height:1.75}
+ .hero-object{min-height:390px}
+ .credibility-strip-inner{justify-content:flex-start;align-items:flex-start;gap:11px 8px;padding:16px 0}
+ .credibility-strip-inner>span{font-size:10px;flex:1 1 46%;white-space:normal;line-height:1.45}
+ .trust-section{padding:70px 0}
+ .trust-intro{margin-bottom:30px;gap:15px}
+ .trust-intro h2{font-size:clamp(38px,10.2vw,54px);letter-spacing:-2.5px}
+ .trust-intro p{font-size:14px}
+ .trust-grid{grid-template-columns:1fr;gap:10px}
+ .trust-tile{min-height:auto;padding:22px 23px}
+ .trust-glyph{margin:19px 0 15px}
+ .trust-tile h3{font-size:22px}
+ .trust-tile p{font-size:14px}
+ .team-mark-bc img{height:100%}
+}
+@media(prefers-reduced-motion:reduce){.trust-tile{transition:none}.trust-tile:hover,.project-card:hover{transform:none}}

@@ -16,6 +16,7 @@ const INSTAGRAM = 'https://www.instagram.com/cz.tecno/';
 const GITHUB = 'https://github.com/pedrochiozza5';
 const BC_INSTAGRAM = 'https://www.instagram.com/bc.tecnologia_/';
 const BC_CV = 'https://curriculum-bautista.vercel.app/';
+const BC_LOGO_URL = `${import.meta.env.BASE_URL}bc-studio-logo.jpg`;
 
 type Category = 'Web' | 'Sistemas' | 'Automatización' | 'Backend';
 type Filter = 'Todos' | Category;
@@ -178,7 +179,7 @@ function App() {
   return <>
     <div className="page-progress" style={{ width: `${scrollProgress}%` }} aria-hidden="true" />
     <header className="site-header"><div className="shell nav-shell">
-      <a href="#inicio" className="logo-link" onClick={() => setMenuOpen(false)} aria-label="CZ TECNO, ir al inicio"><Brand /></a><span className="brand-partner" aria-label="En alianza con BC Studio"><span>×</span> BC STUDIO</span>
+      <a href="#inicio" className="logo-link" onClick={() => setMenuOpen(false)} aria-label="CZ TECNO, ir al inicio"><Brand /></a><span className="brand-partner" aria-label="En alianza con BC Studio"><span>×</span><img src={BC_LOGO_URL} className="brand-partner-logo" alt="" /> BC STUDIO</span>
       <nav className={`desktop-nav ${menuOpen ? 'open' : ''}`} aria-label="Navegación principal">
         <a href="#proyectos" onClick={() => setMenuOpen(false)}>Proyectos <span>01</span></a>
         <a href="#soluciones" onClick={() => setMenuOpen(false)}>Soluciones <span>02</span></a>
@@ -192,19 +193,21 @@ function App() {
     <main>
       <section className="hero" id="inicio"><div className="hero-mesh" aria-hidden="true"/><div className="shell hero-content">
         <div className="hero-topline"><span className="status-dot"/><span>DOS MARCAS, UN EQUIPO · SOFTWARE & TECNOLOGÍA</span><span className="hero-topline-right">RANCHOS, ARGENTINA · 2026</span></div>
-        <div className="hero-grid"><div className="hero-copy"><span className="overline hero-mini">DOS HERMANOS · CZ TECNO × BC STUDIO</span>
-          <h1>NO ES SOLO<br/><span>CODIGO.</span><br/><em>ES HACER</em><br/>QUE PASE<span className="headline-dot">.</span></h1>
-          <div className="hero-bottom"><p>Somos Pedro y Bautista Chiozza. Combinamos <strong>desarrollo web, diseño, sistemas, automatizaciones y soluciones IT</strong> para construir herramientas que resuelven problemas de verdad.</p><div className="hero-links"><a className="button button-primary" href="#proyectos">Explorar proyectos <ArrowUpRight size={20}/></a><a className="button button-text" href="#equipo">Conocé al equipo <ArrowDown size={19}/></a></div></div>
+        <div className="hero-grid"><div className="hero-copy"><span className="overline hero-mini">DOS HERMANOS · CZ TECNO × BC STUDIO</span><div className="hero-team-badge"><img src={LOGO_URL} alt="CZ TECNO"/><span>×</span><img src={BC_LOGO_URL} alt="BC Studio"/><strong>UN SOLO EQUIPO DIGITAL</strong></div>
+          <h1>ENTRAR.<br/><span>CONFIAR.</span><br/><em>HACER QUE</em><br/>PASE<span className="headline-dot">.</span></h1>
+          <div className="hero-bottom"><p>Somos Pedro y Bautista Chiozza. Unimos <strong>diseño que inspira confianza</strong> con <strong>software que resuelve</strong>. Creamos webs, sistemas y automatizaciones pensados para que cada proyecto se vea profesional y funcione de verdad.</p><div className="hero-links"><a className="button button-primary" href="#proyectos">Explorar proyectos <ArrowUpRight size={20}/></a><a className="button button-text" href={WHATSAPP} target="_blank" rel="noreferrer">Contanos tu idea <ArrowUpRight size={19}/></a></div></div>
         </div>
         <div className="hero-object" aria-label="Ilustración conceptual de un sistema digital">
           <div className="holo-grid" aria-hidden="true"/><div className="holo-ring ring-a"/><div className="holo-ring ring-b"/><img className="holo-brand" src={LOGO_URL} alt="" />
           <div className="floating-label float-top"><span className="tiny-indicator"/> SYSTEM ONLINE <span>● ● ●</span></div>
-          <div className="floating-window"><div className="window-header"><div className="window-dots"><i/><i/><i/></div><span>cztecno + bc / workspace</span><span>↗</span></div><div className="window-content"><small>BIENVENIDO AL PROCESO</small><strong>IDEA → <span>SOLUCIÓN</span></strong><div className="window-flow"><div><i>01</i><span>Entender</span><b>✓</b></div><div><i>02</i><span>Construir</span><b>✓</b></div><div><i>03</i><span>Evolucionar</span><b className="flow-active">↗</b></div></div></div><div className="window-bottom"><span>● READY TO BUILD</span><span>V 2.0</span></div></div>
+          <div className="floating-window"><div className="window-header"><div className="window-dots"><i/><i/><i/></div><span>cztecno + bc / workspace</span><span>↗</span></div><div className="window-content"><small>CONFIANZA / DISEÑO / CÓDIGO</small><strong>IDEA → <span>RESULTADO</span></strong><div className="window-flow"><div><i>01</i><span>Entender</span><b>✓</b></div><div><i>02</i><span>Construir</span><b>✓</b></div><div><i>03</i><span>Evolucionar</span><b className="flow-active">↗</b></div></div></div><div className="window-bottom"><span>● READY TO BUILD</span><span>CZ × BC / 2026</span></div></div>
           <div className="floating-label float-bottom">DESIGN <span>+</span> CODE <span>+</span> SYSTEMS</div>
           <span className="hero-vertical">DESIGNED TO SOLVE / BUILT TO LAST</span>
         </div></div>
         <div className="hero-foot"><a href="#proyectos" className="scroll-hint"><span className="scroll-arrow"><ArrowDown size={15}/></span> SCROLL PARA EXPLORAR</a><div className="hero-foot-links"><a href={GITHUB} target="_blank" rel="noreferrer">GITHUB <ArrowUpRight size={14}/></a><a href={INSTAGRAM} target="_blank" rel="noreferrer">CZ TECNO <ArrowUpRight size={14}/></a><a href={BC_INSTAGRAM} target="_blank" rel="noreferrer">BC STUDIO <ArrowUpRight size={14}/></a></div><span>01 / PORTFOLIO DIGITAL</span></div>
       </div></section>
+
+      <section className="credibility-strip" aria-label="Nuestra forma de trabajar"><div className="shell credibility-strip-inner"><span><Check size={15}/> Trabajo real y visible</span><span><Check size={15}/> Diseño responsive de calidad</span><span><Check size={15}/> Contacto directo con el equipo</span><span><Check size={15}/> Software preparado para evolucionar</span></div></section>
 
       <div className="ticker" aria-label="Áreas de trabajo"><div className="ticker-track" aria-hidden="true">{Array.from({ length: 4 }).map((_,i) => <span key={i}>DESARROLLO WEB <b>•</b> SISTEMAS A MEDIDA <b>•</b> AUTOMATIZACIONES <b>•</b> NETWORKING & IT <b>•</b> </span>)}</div></div>
 
@@ -216,9 +219,19 @@ function App() {
         </article>)}</div><div className="more-work reveal"><span>HAY MÁS IDEAS CONVIRTIÉNDOSE EN PROYECTOS.</span><a href={GITHUB} target="_blank" rel="noreferrer">Explorar mi GitHub <Github size={18}/><ArrowUpRight size={17}/></a></div>
       </div></section>
 
-      <section className="manifesto-band"><div className="shell"><span>NO HAGO TECNOLOGÍA POR HACER TECNOLOGÍA.</span><p>LA HAGO PARA QUE <em>ALGO FUNCIONE MEJOR.</em></p><span className="band-asterisk">•</span></div></section>
+      <section className="trust-section" id="confianza"><div className="shell">
+        <div className="trust-intro reveal"><span className="eyebrow"><b>01B</b> / POR QUÉ CONFIAR</span><h2>La primera impresión importa.<br/><em>Lo que hay detrás, mucho más.</em></h2><p>Un buen diseño no reemplaza la calidad técnica. La hace visible. Nuestro trabajo une experiencia, estética y ejecución para que tu proyecto transmita el nivel que merece.</p></div>
+        <div className="trust-grid">
+          <article className="trust-tile reveal"><span>01 /</span><div className="trust-glyph"><MonitorSmartphone size={27}/></div><h3>Diseño con intención</h3><p>No armamos pantallas al azar: claridad, jerarquía visual y experiencia móvil desde el primer momento.</p></article>
+          <article className="trust-tile reveal"><span>02 /</span><div className="trust-glyph"><Code2 size={27}/></div><h3>Trabajo demostrable</h3><p>Proyectos reales que se pueden recorrer, comprender y evaluar. Sin números inventados ni promesas vacías.</p></article>
+          <article className="trust-tile reveal"><span>03 /</span><div className="trust-glyph"><Network size={27}/></div><h3>Mirada integral</h3><p>Del diseño a la base de datos y la infraestructura que sostiene el producto. Todo conectado.</p></article>
+          <article className="trust-tile reveal"><span>04 /</span><div className="trust-glyph"><ArrowUpRight size={27}/></div><h3>Relación directa</h3><p>Hablás con quienes diseñan y desarrollan. Menos intermediarios, más claridad y seguimiento.</p></article>
+        </div>
+      </div></section>
 
-      <section className="section solutions-section" id="soluciones"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>02</b> / SOLUCIONES</span><div className="heading-row"><h2>Un problema.<br/><em>Muchas formas de resolverlo.</em></h2><p>Mi diferencial es unir desarrollo, soporte e infraestructura en una misma mirada: lo que diseño también tiene que funcionar en la vida real.</p></div></div>
+      <section className="manifesto-band"><div className="shell"><span>NO HACEMOS TECNOLOGÍA POR HACER TECNOLOGÍA.</span><p>LA HACEMOS PARA QUE <em>ALGO FUNCIONE MEJOR.</em></p><span className="band-asterisk">•</span></div></section>
+
+      <section className="section solutions-section" id="soluciones"><div className="shell"><div className="section-heading reveal"><span className="eyebrow"><b>02</b> / SOLUCIONES</span><div className="heading-row"><h2>Un problema.<br/><em>Muchas formas de resolverlo.</em></h2><p>Nuestro diferencial es combinar diseño, desarrollo, soporte e infraestructura: lo que se ve bien también tiene que funcionar en la vida real.</p></div></div>
         <div className="solutions-list"><article className="solution reveal"><span className="solution-index">01 /</span><div className="solution-icon"><MonitorSmartphone size={30}/></div><div><h3>Webs & e-commerce</h3><p>Sitios con identidad, tiendas, catálogos y experiencias mobile-first que ayudan a mostrar y vender mejor.</p><span>REACT · UI/UX · TIENDAS</span></div><ArrowUpRight className="solution-arrow" size={24}/></article>
         <article className="solution reveal"><span className="solution-index">02 /</span><div className="solution-icon"><Database size={30}/></div><div><h3>Sistemas a medida</h3><p>Paneles administrativos, gestión de clientes, operaciones, stock, reservas, datos y APIs conectadas.</p><span>BACKEND · BASES DE DATOS · SAAS</span></div><ArrowUpRight className="solution-arrow" size={24}/></article>
         <article className="solution reveal"><span className="solution-index">03 /</span><div className="solution-icon"><Workflow size={30}/></div><div><h3>Bots & automatización</h3><p>Procesos que dejan de depender de copiar, pegar y repetir. Integraciones y flujos diseñados para ahorrar trabajo.</p><span>WHATSAPP · APIS · INTEGRACIONES</span></div><ArrowUpRight className="solution-arrow" size={24}/></article>
@@ -232,7 +245,7 @@ function App() {
         <div className="section-heading reveal"><span className="eyebrow"><b>04</b> / LAS PERSONAS DETRÁS</span><div className="heading-row"><h2>Dos hermanos.<br/><em>Una visión compartida.</em></h2><p>Unimos lo que hacemos en CZ TECNO y BC Studio para acompañar proyectos desde la primera idea hasta su puesta en marcha.</p></div></div>
         <div className="team-grid">
           <article className="team-card reveal"><div className="team-card-top"><span className="team-mark team-mark-cz"><img src={LOGO_URL} alt="Logo de CZ TECNO"/></span><span className="team-number">01 / SOFTWARE & SISTEMAS</span></div><div><span className="team-identity">CZ TECNO</span><h3>Pedro Chiozza<span>.</span></h3><p>Desarrollador full stack y técnico informático. Backend, software a medida, automatización, infraestructura, redes y soporte IT.</p></div><a href={INSTAGRAM} target="_blank" rel="noreferrer">Conocer CZ TECNO <ArrowUpRight size={18}/></a></article>
-          <article className="team-card reveal"><div className="team-card-top"><span className="team-mark team-mark-bc" aria-label="BC Studio">BC<span>.</span></span><span className="team-number">02 / DESARROLLO WEB</span></div><div><span className="team-identity">BC STUDIO</span><h3>Bautista Chiozza<span>.</span></h3><p>Desarrollo web para negocios, diseño de experiencias digitales y soluciones orientadas a simplificar procesos, con proyectos propios para distintas marcas.</p></div><div className="team-links"><a href={BC_INSTAGRAM} target="_blank" rel="noreferrer">Instagram de BC Studio <ArrowUpRight size={18}/></a><a href={BC_CV} target="_blank" rel="noreferrer">Ver portfolio personal <ArrowUpRight size={18}/></a></div></article>
+          <article className="team-card reveal"><div className="team-card-top"><span className="team-mark team-mark-bc" aria-label="Logo de BC Studio"><img src={BC_LOGO_URL} alt="Logo original de BC Studio"/></span><span className="team-number">02 / DESARROLLO WEB</span></div><div><span className="team-identity">BC STUDIO</span><h3>Bautista Chiozza<span>.</span></h3><p>Desarrollo web para negocios, diseño de experiencias digitales y soluciones orientadas a simplificar procesos, con proyectos propios para distintas marcas.</p></div><div className="team-links"><a href={BC_INSTAGRAM} target="_blank" rel="noreferrer">Instagram de BC Studio <ArrowUpRight size={18}/></a><a href={BC_CV} target="_blank" rel="noreferrer">Ver portfolio personal <ArrowUpRight size={18}/></a></div></article>
         </div><p className="team-footnote">CZ TECNO + BC Studio es nuestra identidad de trabajo mientras definimos la marca definitiva de la agencia.</p>
       </div></section>
 
