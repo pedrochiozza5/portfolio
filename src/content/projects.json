@@ -21,7 +21,8 @@
     "visual": "sushi",
     "url": "https://punttosushi.com.ar/",
     "urlLabel": "Visitar sitio",
-    "cover": ""
+    "cover": "",
+    "owner": "CZ TECNO"
   },
   {
     "id": "amargos",
@@ -44,7 +45,8 @@
     "visual": "amargos",
     "url": "https://bienamargos.com.ar/",
     "urlLabel": "Visitar tienda",
-    "cover": ""
+    "cover": "",
+    "owner": "CZ TECNO"
   },
   {
     "id": "coop",
@@ -65,7 +67,8 @@
       "Integraciones"
     ],
     "visual": "coop",
-    "cover": ""
+    "cover": "",
+    "owner": "CZ TECNO"
   },
   {
     "id": "teros",
@@ -86,7 +89,8 @@
       "Automatización"
     ],
     "visual": "teros",
-    "cover": ""
+    "cover": "",
+    "owner": "CZ TECNO"
   },
   {
     "id": "contable",
@@ -107,7 +111,8 @@
       "MySQL"
     ],
     "visual": "contable",
-    "cover": ""
+    "cover": "",
+    "owner": "CZ TECNO"
   },
   {
     "id": "turnero",
@@ -130,6 +135,95 @@
     "visual": "turnero",
     "url": "https://github.com/pedrochiozza5/turnero-api",
     "urlLabel": "Ver repositorio",
-    "cover": ""
+    "cover": "",
+    "owner": "CZ TECNO"
+  },
+  {
+    "id": "donfelipe",
+    "name": "Alojamiento Don Felipe",
+    "tagline": "Un proyecto digital para alojamientos.",
+    "kind": "ALOJAMIENTO · SITIO WEB",
+    "description": "Proyecto web de alojamiento compartido por Bautista como parte del trabajo de BC Studio.",
+    "url": "https://alojamientodonfelipe.com.ar/",
+    "number": "07",
+    "category": "Web",
+    "status": "PORTFOLIO BC STUDIO",
+    "problem": "Presentar una propuesta de servicios de forma clara en internet.",
+    "solution": "Caso web compartido por Bautista. Los detalles técnicos específicos están pendientes de documentar.",
+    "result": "Enlace público al proyecto para conocer su propuesta.",
+    "stack": [
+      "Sitio web",
+      "BC Studio"
+    ],
+    "visual": "site",
+    "cover": "",
+    "owner": "BC STUDIO",
+    "urlLabel": "Visitar sitio"
+  },
+  {
+    "id": "studiojg",
+    "name": "Studio JG",
+    "tagline": "Identidad y presencia para un estudio.",
+    "kind": "SITIO WEB · ESTUDIO",
+    "description": "Sitio de Studio JG incluido entre los trabajos web que comparte BC Studio.",
+    "url": "https://studio-jg.vercel.app/",
+    "number": "08",
+    "category": "Web",
+    "status": "PORTFOLIO BC STUDIO",
+    "problem": "Presentar una propuesta de servicios de forma clara en internet.",
+    "solution": "Caso web compartido por Bautista. Los detalles técnicos específicos están pendientes de documentar.",
+    "result": "Enlace público al proyecto para conocer su propuesta.",
+    "stack": [
+      "Sitio web",
+      "BC Studio"
+    ],
+    "visual": "site",
+    "cover": "",
+    "owner": "BC STUDIO",
+    "urlLabel": "Visitar sitio"
+  },
+  {
+    "id": "zorzal",
+    "name": "Cabañas El Zorzal",
+    "tagline": "Una propuesta de alojamiento online.",
+    "kind": "TURISMO · SITIO WEB",
+    "description": "Proyecto web de cabañas presentado por Bautista para el portfolio conjunto.",
+    "url": "https://cabañaselzorzal.com.ar/",
+    "number": "09",
+    "category": "Web",
+    "status": "PORTFOLIO BC STUDIO",
+    "problem": "Presentar una propuesta de servicios de forma clara en internet.",
+    "solution": "Caso web compartido por Bautista. Los detalles técnicos específicos están pendientes de documentar.",
+    "result": "Enlace público al proyecto para conocer su propuesta.",
+    "stack": [
+      "Sitio web",
+      "BC Studio"
+    ],
+    "visual": "site",
+    "cover": "",
+    "owner": "BC STUDIO",
+    "urlLabel": "Visitar sitio"
+  },
+  {
+    "id": "lapieza",
+    "name": "La Pieza Barber",
+    "tagline": "Presencia digital para una barbería.",
+    "kind": "BARBERÍA · SITIO WEB",
+    "description": "Sitio web de barbería compartido por Bautista entre los desarrollos de BC Studio.",
+    "url": "https://lapiezabarber.com.ar/",
+    "number": "10",
+    "category": "Web",
+    "status": "PORTFOLIO BC STUDIO",
+    "problem": "Presentar una propuesta de servicios de forma clara en internet.",
+    "solution": "Caso web compartido por Bautista. Los detalles técnicos específicos están pendientes de documentar.",
+    "result": "Enlace público al proyecto para conocer su propuesta.",
+    "stack": [
+      "Sitio web",
+      "BC Studio"
+    ],
+    "visual": "site",
+    "cover": "",
+    "owner": "BC STUDIO",
+    "urlLabel": "Visitar sitio"
   }
 ]
