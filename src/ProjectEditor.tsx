@@ -5,7 +5,7 @@ import './editor.css';
 
 type Props = { projects: Project[]; setProjects: Dispatch<SetStateAction<Project[]>>; onClose: () => void; onReset: () => void; saveFailed: boolean };
 const categories: Project['category'][] = ['Web','Sistemas','Automatización','Backend'];
-const visuals: Project['visual'][] = ['sushi','amargos','coop','teros','contable','turnero'];
+const visuals: Project['visual'][] = ['sushi','amargos','coop','teros','contable','turnero','site'];
 const github = 'https://github.com/pedrochiozza5/portfolio/edit/main/src/content/projects.json';
 const safeUrl = (v: string) => { try { return ['https:','http:'].includes(new URL(v).protocol); } catch { return false; } };
 const safeImage = (v: string) => safeUrl(v) || /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(v) || /^images\/projects\/[A-Za-z0-9._/-]+$/.test(v);
@@ -23,6 +23,7 @@ export function normalize(payload: unknown): Project[] {
       kind:str('kind',130),status:str('status',130), description:str('description'),problem:str('problem'),
       solution:str('solution'),result:str('result'),stack:Array.isArray(x.stack)?x.stack.filter((s):s is string=>typeof s==='string').slice(0,12):[],
       visual:visuals.includes(x.visual as Project['visual'])?x.visual as Project['visual']:'contable',
+      owner:x.owner==='BC STUDIO'?'BC STUDIO':'CZ TECNO',
       cover:safeImage(cover)?cover:'',url:safeUrl(str('url',500))?str('url',500):'',urlLabel:str('urlLabel',100)
     };
   });
@@ -58,7 +59,7 @@ export default function ProjectEditor({projects,setProjects,onClose,onReset,save
   const edit=(data:Partial<Project>)=>{if(selected)setProjects(old=>old.map(p=>p.id===selected.id?{...p,...data}:p));};
   const add=()=>{
     if(projects.length>=40){setMessage('Máximo 40 proyectos.');return;}
-    const item:Project={id:'nuevo-'+Date.now(),number:String(projects.length+1).padStart(2,'0'),name:'Nuevo proyecto',tagline:'',category:'Sistemas',kind:'SOFTWARE A MEDIDA',status:'EN DESARROLLO',description:'',problem:'',solution:'',result:'',stack:[],visual:'contable',cover:'',url:'',urlLabel:''};
+    const item:Project={id:'nuevo-'+Date.now(),number:String(projects.length+1).padStart(2,'0'),name:'Nuevo proyecto',tagline:'',category:'Sistemas',kind:'SOFTWARE A MEDIDA',status:'EN DESARROLLO',description:'',problem:'',solution:'',result:'',stack:[],visual:'contable',cover:'',url:'',urlLabel:'',owner:'CZ TECNO'};
     setProjects(p=>[...p,item]);setSelectedId(item.id);setTab('edit');
   };
   const reorder=(step:number)=>{
@@ -96,7 +97,7 @@ export default function ProjectEditor({projects,setProjects,onClose,onReset,save
     finally{if(jsonFile.current)jsonFile.current.value='';}
   };
   return <div className="ed-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)onClose();}}><section className="ed-panel" role="dialog" aria-modal="true" aria-label="Editor de portfolio">
-    <header className="ed-head"><div><img src={import.meta.env.BASE_URL+'logo-cztecno.svg'} alt="Logo CZ TECNO"/><span><small>CZ TECNO / CONTENT STUDIO</small><strong>Editor de proyectos</strong></span></div><button onClick={onClose} aria-label="Cerrar"><X size={22}/></button></header>
+    <header className="ed-head"><div><img src={import.meta.env.BASE_URL+'logo-cztecno.svg'} alt="Logo CZ TECNO"/><span><small>CZ TECNO × BC STUDIO / CONTENT STUDIO</small><strong>Editor de proyectos</strong></span></div><button onClick={onClose} aria-label="Cerrar"><X size={22}/></button></header>
     <div className="ed-info"><b>{saveFailed?'Sin espacio para guardar':'Borrador local'}</b> · {saveFailed?'Descargá el JSON para conservar el trabajo.':'Los cambios se guardan solo en este navegador. Para publicarlos, usá GitHub.'}</div>
     <div className="ed-tabs"><button className={tab==='edit'?'active':''} onClick={()=>setTab('edit')}>Editar proyectos ({projects.length})</button><button className={tab==='publish'?'active':''} onClick={()=>setTab('publish')}>Publicar</button></div>
     {tab==='edit'?<div className="ed-layout"><aside className="ed-sidebar"><header>PROYECTOS <button onClick={add} aria-label="Nuevo proyecto"><Plus size={17}/></button></header><div className="ed-menu">{projects.map(p=><button className={selected?.id===p.id?'selected':''} key={p.id} onClick={()=>setSelectedId(p.id)}><small>{p.number}</small><span>{p.name}<em>{p.category}</em></span></button>)}</div><button className="ed-add" onClick={add}><Plus size={16}/> Agregar proyecto</button></aside>
@@ -106,7 +107,7 @@ export default function ProjectEditor({projects,setProjects,onClose,onReset,save
         <Input label="URL de la imagen (opcional)" value={selected.cover?.startsWith('data:')?'':selected.cover??''} onChange={cover=>edit({cover})}/>
         <div className="ed-grid"><Input label="Nombre" value={selected.name} onChange={name=>edit({name})}/><Input label="Estado" value={selected.status} onChange={status=>edit({status})}/></div>
         <Input label="Frase principal" value={selected.tagline} onChange={tagline=>edit({tagline})}/><Input label="Tipo de proyecto" value={selected.kind} onChange={kind=>edit({kind})}/>
-        <div className="ed-grid"><label className="ed-field"><span>Categoría</span><select value={selected.category} onChange={e=>edit({category:e.target.value as Project['category']})}>{categories.map(x=><option key={x}>{x}</option>)}</select></label><label className="ed-field"><span>Ilustración sin imagen</span><select value={selected.visual} onChange={e=>edit({visual:e.target.value as Project['visual']})}>{visuals.map(x=><option key={x}>{x}</option>)}</select></label></div>
+        <div className="ed-grid"><label className="ed-field"><span>Marca / autor</span><select value={selected.owner||"CZ TECNO"} onChange={e=>edit({owner:e.target.value as Project["owner"]})}><option value="CZ TECNO">CZ TECNO / Pedro</option><option value="BC STUDIO">BC Studio / Bautista</option></select></label><label className="ed-field"><span>Categoría</span><select value={selected.category} onChange={e=>edit({category:e.target.value as Project['category']})}>{categories.map(x=><option key={x}>{x}</option>)}</select></label></div><div className="ed-grid"><label className="ed-field"><span>Ilustración sin imagen</span><select value={selected.visual} onChange={e=>edit({visual:e.target.value as Project['visual']})}>{visuals.map(x=><option key={x}>{x}</option>)}</select></label></div>
         <Input label="Descripción" value={selected.description} onChange={description=>edit({description})} large/><Input label="Problema" value={selected.problem} onChange={problem=>edit({problem})} large/><Input label="Solución" value={selected.solution} onChange={solution=>edit({solution})} large/><Input label="Resultado" value={selected.result} onChange={result=>edit({result})} large/>
         <Input label="Tecnologías (separadas por coma)" value={selected.stack.join(', ')} onChange={v=>edit({stack:v.split(',').map(x=>x.trim()).filter(Boolean)})}/><div className="ed-grid"><Input label="Enlace del proyecto" value={selected.url??''} onChange={url=>edit({url})}/><Input label="Nombre del botón" value={selected.urlLabel??''} onChange={urlLabel=>edit({urlLabel})}/></div>
       </div>:<p>Agregá tu primer proyecto.</p>}</div></div>:
